@@ -4,14 +4,14 @@
 library(shiny)
 library(bslib)
 ## Theme
-#my_theme <- bootstrapLib(theme = bs_theme(version = 5, preset = "bootstrap"))
+my_theme <- bs_theme(version = 5, preset = "bootstrap")
 
 # Server ----------------------------------------------------------------
 # Load required libraries
 # Data tables
 library(DT)
 # Required to make ggplot work(?)
-library(munsell) 
+library(munsell)
 # General plotting
 library(ggplot2)
 

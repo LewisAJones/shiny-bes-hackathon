@@ -1,5 +1,6 @@
 # UI
 ui <- page_navbar(
+  theme = my_theme,
   title = "BES Hackathon",
   fillable_mobile = TRUE,
   nav_panel("Table",
