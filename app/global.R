@@ -19,4 +19,4 @@ library(ggplot2)
 # Download required data
 # dat <- read.csv("https://github.com/nhcooper123/reproduce-reuse-recycle/raw/refs/heads/main/data/BES-data-code-hackathon-cleaned_2025-11-16.csv")
 # saveRDS(object = dat, file = "app/data/dat.RDS")
-dat <- readRDS("app/data/dat.RDS")
+dat <- readRDS("data/dat.RDS")
