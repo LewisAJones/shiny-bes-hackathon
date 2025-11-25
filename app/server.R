@@ -1,9 +1,16 @@
 # SERVER
 server <- function(input, output) {
   
+  # Data ------------------------------------------------------------------
+  dataset <- reactive({
+    tmp <- dat
+    tmp$doi <- paste0('<a href=\"https://doi.org/', tmp$doi,'" target="_blank">', tmp$doi ,"</a>")
+    tmp
+  })
+  
   # Plot ------------------------------------------------------------------
   output$plot <- renderPlot({
-    p <- ggplot(data = dat, aes(x = .data[[input$x]], y = .data[[input$y]])) +
+    p <- ggplot(data = dataset(), aes(x = .data[[input$x]], y = .data[[input$y]])) +
       geom_point()
     
     if (input$colour != 'None') p <- p + aes(colour = .data[[input$colour]])
@@ -19,14 +26,18 @@ server <- function(input, output) {
   })
   
   # Table -----------------------------------------------------------------
-  output$table <- renderDataTable(
-    dat,
-    extensions = c("Responsive", "Scroller"),
+  output$table <- renderDT(
+    dataset(),
+    extensions = c("Scroller"),
     options = list(
       deferRender = TRUE,
       scrollY = 800,
       scroller = TRUE
-    )
+    ),
+    filter = list(
+      position = 'top'
+    ),
+    escape = FALSE
   )
   
 }
