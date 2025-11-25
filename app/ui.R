@@ -3,14 +3,14 @@ ui <- page_navbar(
   theme = my_theme,
   title = "BES Hackathon",
   fillable_mobile = TRUE,
+  nav_panel("About",
+            p("This is text providing information :)")
+  ),
   nav_panel("Plot", 
             plotOutput("plot")
             ),
   nav_panel("Table",
             dataTableOutput("table")
-            ),
-  nav_panel("About",
-            p("This is text providing information :)")
             ),
   nav_spacer(),
   nav_item(

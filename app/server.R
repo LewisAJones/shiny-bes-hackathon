@@ -28,16 +28,18 @@ server <- function(input, output) {
   # Table -----------------------------------------------------------------
   output$table <- renderDT(
     dataset(),
-    extensions = c("Scroller"),
+    extensions = c("Scroller", "KeyTable"),
     options = list(
       deferRender = TRUE,
       scrollY = 800,
-      scroller = TRUE
+      scroller = TRUE,
+      keys = TRUE
     ),
     filter = list(
       position = 'top'
     ),
-    escape = FALSE
+    escape = FALSE,
+    selection = 'none'
   )
   
 }
