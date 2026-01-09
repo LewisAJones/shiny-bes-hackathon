@@ -10,10 +10,20 @@ server <- function(input, output) {
   
   # Plot ------------------------------------------------------------------
   output$plot <- renderPlot({
-    p <- ggplot(data = dataset(), aes(x = .data[[input$x]], y = .data[[input$y]])) +
-      geom_point()
+    p <- ggplot(data = dataset()) +
+      scale_colour_viridis_d() +
+      scale_fill_viridis_d() +
+      theme_bw()
     
-    if (input$colour != 'None') p <- p + aes(colour = .data[[input$colour]])
+    if (input$x != '.') p <- p + aes(x = .data[[input$x]])
+    
+    if (input$y != '.') p <- p + aes(y = .data[[input$y]])
+    
+    if (input$colour != '.') p <- p + aes(colour = .data[[input$colour]])
+    
+    if (input$fill != '.') p <- p + aes(fill = .data[[input$fill]])
+    
+    if (input$geom != '.') p <- p + get(input$geom)()
     
     facets <- paste(input$facet_row, '~', input$facet_col)
     
@@ -29,9 +39,11 @@ server <- function(input, output) {
   output$table <- renderDT(
     dataset(),
     extensions = c("Scroller", "KeyTable"),
+    rownames = FALSE,
     options = list(
       deferRender = TRUE,
       scrollY = 800,
+      scrollX = TRUE,
       scroller = TRUE,
       keys = TRUE
     ),

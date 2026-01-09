@@ -11,29 +11,40 @@ ui <- page_navbar(
               sidebar = sidebar(
                 selectInput(
                   inputId = 'x', 
-                  label = 'X-axis', 
-                  choices = colnames(dat), 
-                  selected = "year_published"
+                  label = 'X-axis variable', 
+                  choices = c(None='.', colnames(dat))
                 ), 
                 selectInput(
                   inputId = 'y', 
-                  label = 'Y-axis', 
-                  choices = colnames(dat), 
-                  selected = "paper_number"
+                  label = 'Y-axis variable', 
+                  choices = c(None='.', colnames(dat))
                 ),
                 selectInput(
+                  inputId = 'geom', 
+                  label = 'Plot type', 
+                  choices = c(None = '.', 
+                              Bar = "geom_bar", 
+                              Boxplot = "geom_boxplot",
+                              Line = "geom_line",
+                              Point = "geom_point")
+                ), 
+                selectInput(
                   inputId = 'colour', 
-                  label = 'Colour', 
-                  choices = colnames(dat), 
-                  selected = "journal"
+                  label = 'Colour by', 
+                  choices = c(None='.', colnames(dat))
+                ),
+                selectInput(
+                  inputId = 'fill', 
+                  label = 'Fill by', 
+                  choices = c(None='.', colnames(dat))
                 ),
                 selectInput(
                   inputId = 'facet_row', 
-                  label = 'Facet Row',
+                  label = 'Facet row by',
                   choices = c(None='.', colnames(dat))
                 ),
                 selectInput(inputId = 'facet_col', 
-                            label = 'Facet Column',
+                            label = 'Facet column by',
                             choices = c(None='.', colnames(dat))
                 ),
                 checkboxInput(
