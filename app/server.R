@@ -42,7 +42,7 @@ server <- function(input, output) {
     rownames = FALSE,
     options = list(
       deferRender = TRUE,
-      scrollY = 800,
+      scrollY = 700,
       scrollX = TRUE,
       scroller = TRUE,
       keys = TRUE
