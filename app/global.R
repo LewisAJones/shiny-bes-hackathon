@@ -3,6 +3,10 @@
 # Load required libraries
 library(shiny)
 library(bslib)
+
+# Enable simple bookmarking
+enableBookmarking(store = "url")
+
 ## Theme
 my_theme <- bs_theme(version = 5, preset = "bootstrap")
 
