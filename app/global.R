@@ -23,8 +23,6 @@ library(DT)
 library(munsell)
 # General plotting
 library(ggplot2)
-# Table
-library(DT)
 
 # Data ------------------------------------------------------------------
 # Download required data
