@@ -1,5 +1,5 @@
 # SERVER
-server <- function(input, output) {
+server <- function(input, output, session) {
   
   # Data ------------------------------------------------------------------
   dataset <- reactive({
@@ -53,5 +53,45 @@ server <- function(input, output) {
     escape = FALSE,
     selection = 'none'
   )
+  
+  observeEvent(input$url_search, {
+    query <- parseQueryString(input$url_search)
+    
+    # Select tab if specified
+    if (!is.null(query$tabs)) {
+      nav_select("tabs", selected = query$tabs, session)
+    }
+    
+    # Send remaining params to client
+    query$tabs <- NULL
+    if (length(query) > 0) {
+      session$sendCustomMessage("updateInputs", query)
+    }
+  }, priority = 1)
+  
+  # Handlers -----------------------------------------------------
+  # Handle bookmark button
+  observeEvent(input$._bookmark_, {
+    # modified from the shiny package
+    exclude <- c("._bookmark_", "url_search", "url_origin")
+    input_vals <- shiny:::serializeReactiveValues(input, exclude = exclude)
+    # remove an inputs that are still their default values
+    input_vals <- unlist(Filter(\(x) !(x == "." || isFALSE(x)), input_vals))
+    res <- ""
+    # If any input values are present, add them.
+    if (length(input_vals) != 0) {
+      res <- paste0(res, "?",
+                    paste0(
+                      httpuv::encodeURIComponent(names(input_vals)),
+                      "=",
+                      httpuv::encodeURIComponent(input_vals),
+                      collapse = "&"
+                    )
+      )
+    }
+    showModal(urlModal(paste0(input$url_origin, res),
+                       subtitle = "This link stores the current state of this
+                                   application."))
+  })
   
 }

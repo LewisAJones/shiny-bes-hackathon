@@ -3,9 +3,14 @@
 # Load required libraries
 library(shiny)
 library(bslib)
+library(shinyjs)
 
-# Enable simple bookmarking
-enableBookmarking(store = "url")
+# Save URL components for bookmarking with shinylive
+jscode <- "
+shinyjs.init = function() {
+  $('#url_search').val(window.parent.location.search);
+  $('#url_origin').val(window.parent.location.origin);
+}"
 
 ## Theme
 my_theme <- bs_theme(version = 5, preset = "bootstrap")
