@@ -32,6 +32,22 @@ server <- function(input, output, session) {
     if (input$jitter) p <- p + geom_jitter()
     if (input$smooth) p <- p + geom_smooth()
     
+    # Valid ggplot build?
+    error_msg <- tryCatch({
+      ggplot_build(p)
+      NULL
+    }, error = function(e) {
+      e$message
+    })
+    
+    validate(
+      need(is.null(error_msg), paste0(
+      "The selected combination of settings is not valid for plotting. ",
+      "Please select alternative settings. \n", 
+      "The specific plot error is as follows: \n > ", 
+      error_msg))
+    )
+    
     p
   })
   
