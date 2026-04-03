@@ -93,8 +93,29 @@ server <- function(input, output, session) {
       nav_select("tabs", selected = query$tabs, session)
     }
     
-    # Send remaining params to client
+    # Restore filters
+    if (!is.null(query$filters)) {
+      filters <- jsonlite::fromJSON(query$filters, simplifyVector = FALSE)
+      pending_filters(filters)
+      
+      # Open the accordion so selectize inputs initialize
+      accordion_panel_open("filters_accordion", "Filters")
+      
+      for (i in seq_along(filters)) {
+        create_filter()
+      }
+      
+      session$onFlushed(function() {
+        for (i in seq_along(filters)) {
+          updateSelectInput(session, paste0("filter_", i, "_col"),
+                            selected = filters[[i]]$col)
+        }
+      })
+    }
+    
+    # Restore other params
     query$tabs <- NULL
+    query$filters <- NULL
     if (length(query) > 0) {
       session$sendCustomMessage("updateInputs", query)
     }
@@ -107,12 +128,25 @@ server <- function(input, output, session) {
     exclude <- c("._bookmark_", "url_search", "url_origin",
                  "table_state", "table_search_columns")
     input_vals <- shiny:::serializeReactiveValues(input, exclude = exclude)
-    # remove remaining DT-associated inputs
-    input_vals <- input_vals[!grepl("^table_", names(input_vals))]
-    # remove an inputs that are still their default values
+    # remove DT- and filter-associated inputs
+    input_vals <- input_vals[!grepl("^(table_|filter_|add_filter|filters_accordion)",
+                                    names(input_vals))]
+    
+    # remove any inputs that are still their default values
     input_vals <- unlist(Filter(\(x) !(x == "." || isFALSE(x)), input_vals))
+    
+    # Serialize active filters as JSON
+    filters <- list()
+    for (id in filter_ids()) {
+      col <- input[[paste0(id, "_col")]]
+      vals <- input[[paste0(id, "_vals")]]
+      if (!is.null(col) && col != "") {
+        filters[[length(filters) + 1]] <- list(col = col, vals = vals)
+      }
+    }
+    
     res <- ""
-    # If any input values are present, add them.
+    # If any input values are present, add them
     if (length(input_vals) != 0) {
       res <- paste0(res, "?",
                     paste0(
@@ -123,6 +157,15 @@ server <- function(input, output, session) {
                     )
       )
     }
+    
+    # If any filter values are present, add them
+    if (length(filters) > 0) {
+      sep <- if (nchar(res) > 0) "&" else "?"
+      res <- paste0(res, sep, "filters=",
+                    httpuv::encodeURIComponent(
+                      jsonlite::toJSON(filters, auto_unbox = TRUE)))
+    }
+    
     showModal(urlModal(paste0(input$url_origin, res),
                        subtitle = "This link stores the current state of this
                                    application."))
@@ -148,8 +191,9 @@ server <- function(input, output, session) {
   # Filters ---------------------------------------------------------------
   filter_ids <- reactiveVal(character(0))
   filter_counter <- reactiveVal(0)
+  pending_filters <- reactiveVal(list())
   
-  observeEvent(input$add_filter, {
+  create_filter <- function() {
     n <- filter_counter() + 1
     filter_counter(n)
     id <- paste0("filter_", n)
@@ -186,10 +230,20 @@ server <- function(input, output, session) {
       req(col, col != "")
       vals <- sort(unique(dat[[col]]))
       vals <- vals[!is.na(vals)]
+      
+      # Check for pending restore values
+      pf <- pending_filters()
+      filter_num <- as.integer(sub("filter_", "", id))
+      selected_vals <- NULL
+      if (filter_num <= length(pf) && !is.null(pf[[filter_num]]$vals)) {
+        selected_vals <- unlist(pf[[filter_num]]$vals)
+      }
+      
       selectInput(
         inputId = paste0(id, "_vals"),
         label = "Values",
         choices = vals,
+        selected = selected_vals,
         multiple = TRUE
       )
     })
@@ -199,6 +253,11 @@ server <- function(input, output, session) {
       removeUI(selector = paste0("#", id))
       filter_ids(setdiff(filter_ids(), id))
     }, once = TRUE)
+  }
+  
+  # Handle add filter button
+  observeEvent(input$add_filter, {
+    create_filter()
   })
   
 }

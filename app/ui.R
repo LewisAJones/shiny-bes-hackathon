@@ -57,6 +57,7 @@ ui <- function(request) {
                 layout_sidebar(
                   sidebar = sidebar(
                     accordion(
+                      id = "filters_accordion",
                       open = FALSE,
                       accordion_panel(
                         "Filters",
