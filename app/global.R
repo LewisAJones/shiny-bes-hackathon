@@ -9,7 +9,7 @@ library(shinyjs)
 jscode <- "
 shinyjs.init = function() {
   $('#url_search').val(window.parent.location.search);
-  $('#url_origin').val(window.parent.location.origin);
+  $('#url_origin').val(window.parent.location.origin + window.parent.location.pathname);
 }"
 
 ## Theme
