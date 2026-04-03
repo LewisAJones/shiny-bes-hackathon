@@ -6,20 +6,46 @@ ui <- function(request) {
     extendShinyjs(text = jscode, functions = c()),
     hidden(textInput("url_search", NULL, value = "")),
     hidden(textInput("url_origin", NULL, value = "")),
-    tags$head(tags$script("
-      Shiny.addCustomMessageHandler('updateInputs', function(params) {
-        for (var id in params) {
-          var $el = $('#' + id);
-          if ($el.length) {
-            var binding = $el.data('shiny-input-binding');
-            if (binding) {
-              binding.setValue($el[0], params[id]);
-              $el.trigger('change');
+    tags$head(
+      tags$script(HTML("
+        Shiny.addCustomMessageHandler('updateInputs', function(params) {
+          for (var id in params) {
+            var $el = $('#' + id);
+            if ($el.length) {
+              var binding = $el.data('shiny-input-binding');
+              if (binding) {
+                binding.setValue($el[0], params[id]);
+                $el.trigger('change');
+              }
             }
           }
+        });
+      ")),
+      tags$script(HTML("
+        function adjustDTHeight(settings) {
+          var $wrapper = $(settings.nTableWrapper);
+          var $scrollBody = $wrapper.find('.dataTables_scrollBody');
+          var wh = window.innerHeight;
+          var topOffset = $scrollBody.offset().top;
+          var $info = $wrapper.find('.dataTables_info');
+          var bottomChrome = $info.length ? $info.outerHeight(true) : 0;
+          var padding = 10;
+          var newHeight = wh - topOffset - bottomChrome - padding;
+          $scrollBody.css('max-height', newHeight + 'px');
+          if (settings.oScroller) {
+            settings.oScroller.dom.scroller.style.height = newHeight + 'px';
+            settings.oScroller.measure();
+          }
         }
-      });
-    ")),
+      
+        $(document).on('init.dt', function(e, settings) {
+          adjustDTHeight(settings);
+          $(window).on('resize', function() {
+            adjustDTHeight(settings);
+          });
+        });
+      ")),
+    ),
     page_navbar(id = "tabs",
       theme = my_theme,
       title = "BES Hackathon",
