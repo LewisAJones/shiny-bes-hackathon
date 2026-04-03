@@ -10,9 +10,16 @@ server <- function(input, output, session) {
   
   # Plot ------------------------------------------------------------------
   output$plot <- renderPlot({
-    p <- ggplot(data = dataset()) +
+    dat <- dataset()
+    if (input$exclude_na_colour != FALSE && input$colour != '.') {
+      dat <- dat[!is.na(dat[[input$colour]]), ]
+    }
+    if (input$exclude_na_fill != FALSE && input$fill != '.') {
+      dat <- dat[!is.na(dat[[input$fill]]), ]
+    }
+    p <- ggplot(data = dat) +
       scale_colour_viridis_d() +
-      scale_fill_viridis_d() +
+      scale_fill_viridis_d(na.value = "grey50") +
       theme_bw()
     
     if (input$x != '.') p <- p + aes(x = .data[[input$x]])
@@ -108,6 +115,23 @@ server <- function(input, output, session) {
     showModal(urlModal(paste0(input$url_origin, res),
                        subtitle = "This link stores the current state of this
                                    application."))
+  })
+  
+  # Show exclude NA from colour option if colour variable selected
+  observe({
+    if (input$colour != '.') {
+      show("exclude_na_colour")
+    } else {
+      hide("exclude_na_colour")
+    }
+  })
+  # Show exclude NA from fill option if fill variable selected
+  observe({
+    if (input$fill != '.') {
+      show("exclude_na_fill")
+    } else {
+      hide("exclude_na_fill")
+    }
   })
   
 }

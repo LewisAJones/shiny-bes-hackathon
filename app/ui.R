@@ -54,11 +54,21 @@ ui <- function(request) {
                       label = 'Colour by', 
                       choices = c(None='.', colnames(dat))
                     ),
+                    hidden(checkboxInput(
+                      inputId = "exclude_na_colour",
+                      label = "Exclude NA from colour",
+                      value = FALSE
+                    )),
                     selectInput(
                       inputId = 'fill', 
                       label = 'Fill by', 
                       choices = c(None='.', colnames(dat))
                     ),
+                    hidden(checkboxInput(
+                      inputId = "exclude_na_fill",
+                      label = "Exclude NA from fill",
+                      value = FALSE
+                    )),
                     selectInput(
                       inputId = 'facet_row', 
                       label = 'Facet row by',
