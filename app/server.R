@@ -11,6 +11,14 @@ server <- function(input, output, session) {
   # Plot ------------------------------------------------------------------
   output$plot <- renderPlot({
     dat <- dataset()
+    # Apply dynamic filters
+    for (id in filter_ids()) {
+      col <- input[[paste0(id, "_col")]]
+      vals <- input[[paste0(id, "_vals")]]
+      if (!is.null(col) && col != "" && !is.null(vals)) {
+        dat <- dat[dat[[col]] %in% vals, ]
+      }
+    }
     if (input$exclude_na_colour != FALSE && input$colour != '.') {
       dat <- dat[!is.na(dat[[input$colour]]), ]
     }
@@ -135,6 +143,62 @@ server <- function(input, output, session) {
     } else {
       hide("exclude_na_fill")
     }
+  })
+  
+  # Filters ---------------------------------------------------------------
+  filter_ids <- reactiveVal(character(0))
+  filter_counter <- reactiveVal(0)
+  
+  observeEvent(input$add_filter, {
+    n <- filter_counter() + 1
+    filter_counter(n)
+    id <- paste0("filter_", n)
+    filter_ids(c(filter_ids(), id))
+    
+    insertUI(
+      selector = "#filter_container",
+      where = "beforeEnd",
+      ui = div(
+        id = id,
+        class = "mb-3 p-2 border rounded",
+        div(
+          class = "d-flex justify-content-between align-items-center mb-1",
+          tags$strong(paste("Filter", n)),
+          actionButton(
+            inputId = paste0(id, "_remove"),
+            label = NULL,
+            icon = icon("xmark"),
+            class = "btn-sm btn-outline-danger"
+          )
+        ),
+        selectInput(
+          inputId = paste0(id, "_col"),
+          label = "Column",
+          choices = c("Select..." = "", colnames(dat))
+        ),
+        uiOutput(paste0(id, "_values_ui"))
+      )
+    )
+    
+    # Render value picker based on selected column
+    output[[paste0(id, "_values_ui")]] <- renderUI({
+      col <- input[[paste0(id, "_col")]]
+      req(col, col != "")
+      vals <- sort(unique(dat[[col]]))
+      vals <- vals[!is.na(vals)]
+      selectInput(
+        inputId = paste0(id, "_vals"),
+        label = "Values",
+        choices = vals,
+        multiple = TRUE
+      )
+    })
+    
+    # Remove handler
+    observeEvent(input[[paste0(id, "_remove")]], {
+      removeUI(selector = paste0("#", id))
+      filter_ids(setdiff(filter_ids(), id))
+    }, once = TRUE)
   })
   
 }

@@ -56,6 +56,15 @@ ui <- function(request) {
       nav_panel("Plot", 
                 layout_sidebar(
                   sidebar = sidebar(
+                    accordion(
+                      open = FALSE,
+                      accordion_panel(
+                        "Filters",
+                        div(id = "filter_container"),
+                        actionButton("add_filter", "Add filter", 
+                                     icon = icon("plus"))
+                      )
+                    ),
                     selectInput(
                       inputId = 'x', 
                       label = 'X-axis variable', 
