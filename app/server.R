@@ -96,8 +96,11 @@ server <- function(input, output, session) {
   # Handle bookmark button
   observeEvent(input$._bookmark_, {
     # modified from the shiny package
-    exclude <- c("._bookmark_", "url_search", "url_origin")
+    exclude <- c("._bookmark_", "url_search", "url_origin",
+                 "table_state", "table_search_columns")
     input_vals <- shiny:::serializeReactiveValues(input, exclude = exclude)
+    # remove remaining DT-associated inputs
+    input_vals <- input_vals[!grepl("^table_", names(input_vals))]
     # remove an inputs that are still their default values
     input_vals <- unlist(Filter(\(x) !(x == "." || isFALSE(x)), input_vals))
     res <- ""
