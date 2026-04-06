@@ -110,6 +110,10 @@ server <- function(input, output, session) {
           updateSelectInput(session, paste0("filter_", i, "_col"),
                             selected = filters[[i]]$col)
         }
+        # Close after values are set
+        shinyjs::delay(500, {
+          accordion_panel_close("plot_accordion", "filters")
+        })
       })
     }
     
