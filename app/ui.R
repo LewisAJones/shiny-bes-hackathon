@@ -56,15 +56,14 @@ ui <- function(request) {
       nav_panel("Plot", 
                 layout_sidebar(
                   sidebar = sidebar(
-                    accordion(
-                      id = "filters_accordion",
-                      open = FALSE,
-                      accordion_panel(
-                        "Filters",
-                        div(id = "filter_container"),
-                        actionButton("add_filter", "Add filter", 
-                                     icon = icon("plus"))
-                      )
+                    selectInput(
+                      inputId = 'geom', 
+                      label = 'Plot type', 
+                      choices = c(None = '.', 
+                                  Bar = "geom_bar", 
+                                  Boxplot = "geom_boxplot",
+                                  Line = "geom_line",
+                                  Point = "geom_point")
                     ),
                     selectInput(
                       inputId = 'x', 
@@ -76,43 +75,76 @@ ui <- function(request) {
                       label = 'Y-axis variable', 
                       choices = c(None='.', colnames(dat))
                     ),
-                    selectInput(
-                      inputId = 'geom', 
-                      label = 'Plot type', 
-                      choices = c(None = '.', 
-                                  Bar = "geom_bar", 
-                                  Boxplot = "geom_boxplot",
-                                  Line = "geom_line",
-                                  Point = "geom_point")
-                    ), 
-                    selectInput(
-                      inputId = 'colour', 
-                      label = 'Colour by', 
-                      choices = c(None='.', colnames(dat))
-                    ),
-                    hidden(checkboxInput(
-                      inputId = "exclude_na_colour",
-                      label = "Exclude NA from colour",
-                      value = FALSE
-                    )),
-                    selectInput(
-                      inputId = 'fill', 
-                      label = 'Fill by', 
-                      choices = c(None='.', colnames(dat))
-                    ),
-                    hidden(checkboxInput(
-                      inputId = "exclude_na_fill",
-                      label = "Exclude NA from fill",
-                      value = FALSE
-                    )),
-                    selectInput(
-                      inputId = 'facet_row', 
-                      label = 'Facet row by',
-                      choices = c(None='.', colnames(dat))
-                    ),
-                    selectInput(inputId = 'facet_col', 
-                                label = 'Facet column by',
-                                choices = c(None='.', colnames(dat))
+                    accordion(
+                      id = "plot_accordion",
+                      open = FALSE,
+                      accordion_panel(
+                        span(
+                          "Colours ",
+                          tooltip(
+                            icon("info-circle"),
+                            "Choose variables to colour or fill the plot by."
+                          )
+                        ),
+                        value = "colour",
+                        selectInput(
+                          inputId = 'colour', 
+                          label = 'Colour by', 
+                          choices = c(None='.', colnames(dat))
+                        ),
+                        hidden(checkboxInput(
+                          inputId = "exclude_na_colour",
+                          label = "Exclude NA from colour",
+                          value = FALSE
+                        )),
+                        selectInput(
+                          inputId = 'fill', 
+                          label = 'Fill by', 
+                          choices = c(None='.', colnames(dat))
+                        ),
+                        hidden(checkboxInput(
+                          inputId = "exclude_na_fill",
+                          label = "Exclude NA from fill",
+                          value = FALSE
+                        )),
+                      ),
+                      accordion_panel(
+                        span(
+                          "Facetting ",
+                          tooltip(
+                            icon("info-circle"),
+                            paste("Choose variables to facet the plot by.",
+                                  "Facetting creates separate subplots for",
+                                  "each level of the chosen variable(s).")
+                          )
+                        ),
+                        value = "facet",
+                        selectInput(
+                          inputId = 'facet_row', 
+                          label = 'Facet row by',
+                          choices = c(None='.', colnames(dat))
+                        ),
+                        selectInput(
+                          inputId = 'facet_col', 
+                          label = 'Facet column by',
+                          choices = c(None='.', colnames(dat))
+                        ),
+                      ),
+                      accordion_panel(
+                        span(
+                          "Filters ",
+                          tooltip(
+                            icon("info-circle"),
+                            paste("Add filters to subset the data. You can",
+                                  "add multiple filters and they will be",
+                                  "combined with AND logic.")
+                          )
+                        ),
+                        value = "filters",
+                        div(id = "filter_container"),
+                        actionButton("add_filter", "Add filter", 
+                                     icon = icon("plus"))
+                      )
                     ),
                     checkboxInput(
                       inputId = 'jitter', 

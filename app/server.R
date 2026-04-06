@@ -99,7 +99,7 @@ server <- function(input, output, session) {
       pending_filters(filters)
       
       # Open the accordion so selectize inputs initialize
-      accordion_panel_open("filters_accordion", "Filters")
+      accordion_panel_open("plot_accordion", "filters")
       
       for (i in seq_along(filters)) {
         create_filter()
@@ -129,7 +129,7 @@ server <- function(input, output, session) {
                  "table_state", "table_search_columns")
     input_vals <- shiny:::serializeReactiveValues(input, exclude = exclude)
     # remove DT- and filter-associated inputs
-    input_vals <- input_vals[!grepl("^(table_|filter_|add_filter|filters_accordion)",
+    input_vals <- input_vals[!grepl("^(table_|filter_|add_filter|plot_accordion)",
                                     names(input_vals))]
     
     # remove any inputs that are still their default values
