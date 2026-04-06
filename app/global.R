@@ -13,7 +13,7 @@ shinyjs.init = function() {
 }"
 
 ## Theme
-my_theme <- bs_theme(version = 5, preset = "bootstrap")
+my_theme <- bs_theme(version = 5, preset = "bootstrap", secondary = "#cfe9b4")
 
 # Server ----------------------------------------------------------------
 # Load required libraries
