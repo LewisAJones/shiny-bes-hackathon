@@ -68,12 +68,12 @@ ui <- function(request) {
                     selectInput(
                       inputId = 'x', 
                       label = 'X-axis variable', 
-                      choices = c(None='.', colnames(dat))
+                      choices = c(None='.', colnames(dat_plot))
                     ), 
                     selectInput(
                       inputId = 'y', 
                       label = 'Y-axis variable', 
-                      choices = c(None='.', colnames(dat))
+                      choices = c(None='.', colnames(dat_plot))
                     ),
                     accordion(
                       id = "plot_accordion",
@@ -90,7 +90,7 @@ ui <- function(request) {
                         selectInput(
                           inputId = 'colour', 
                           label = 'Colour by', 
-                          choices = c(None='.', colnames(dat))
+                          choices = c(None='.', colnames(dat_plot))
                         ),
                         hidden(checkboxInput(
                           inputId = "exclude_na_colour",
@@ -100,7 +100,7 @@ ui <- function(request) {
                         selectInput(
                           inputId = 'fill', 
                           label = 'Fill by', 
-                          choices = c(None='.', colnames(dat))
+                          choices = c(None='.', colnames(dat_plot))
                         ),
                         hidden(checkboxInput(
                           inputId = "exclude_na_fill",
@@ -122,12 +122,12 @@ ui <- function(request) {
                         selectInput(
                           inputId = 'facet_row', 
                           label = 'Facet row by',
-                          choices = c(None='.', colnames(dat))
+                          choices = c(None='.', colnames(dat_plot))
                         ),
                         selectInput(
                           inputId = 'facet_col', 
                           label = 'Facet column by',
-                          choices = c(None='.', colnames(dat))
+                          choices = c(None='.', colnames(dat_plot))
                         ),
                       ),
                       accordion_panel(

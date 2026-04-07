@@ -2,30 +2,28 @@
 server <- function(input, output, session) {
   
   # Data ------------------------------------------------------------------
-  dataset <- reactive({
-    tmp <- dat
-    tmp$doi <- paste0('<a href=\"https://doi.org/', tmp$doi,'" target="_blank">', tmp$doi ,"</a>")
-    tmp
-  })
-  
-  # Plot ------------------------------------------------------------------
-  output$plot <- renderPlot({
-    dat <- dataset()
+  dat_plot_filt <- reactive({
+    tmp <- dat_plot
     # Apply dynamic filters
     for (id in filter_ids()) {
       col <- input[[paste0(id, "_col")]]
       vals <- input[[paste0(id, "_vals")]]
       if (!is.null(col) && col != "" && !is.null(vals)) {
-        dat <- dat[dat[[col]] %in% vals, ]
+        tmp <- tmp[tmp[[col]] %in% vals, ]
       }
     }
     if (input$exclude_na_colour != FALSE && input$colour != '.') {
-      dat <- dat[!is.na(dat[[input$colour]]), ]
+      tmp <- tmp[!is.na(tmp[[input$colour]]), ]
     }
     if (input$exclude_na_fill != FALSE && input$fill != '.') {
-      dat <- dat[!is.na(dat[[input$fill]]), ]
+      tmp <- tmp[!is.na(tmp[[input$fill]]), ]
     }
-    p <- ggplot(data = dat) +
+    tmp
+  })
+  
+  # Plot ------------------------------------------------------------------
+  output$plot <- renderPlot({
+    p <- ggplot(data = dat_plot_filt()) +
       scale_colour_viridis_d() +
       scale_fill_viridis_d(na.value = "grey50") +
       theme_bw()
@@ -68,7 +66,7 @@ server <- function(input, output, session) {
   
   # Table -----------------------------------------------------------------
   output$table <- renderDT(
-    dataset(),
+    dat,
     extensions = c("Scroller", "KeyTable"),
     rownames = FALSE,
     options = list(

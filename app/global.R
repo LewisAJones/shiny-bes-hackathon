@@ -40,3 +40,6 @@ dat <- dat[, c("doi", "journal", "article_type", "year_published", "country_firs
                "code_CITATION", "code_download", "code_open", "code_format", 
                "code_language", "code_README")]
 colnames(dat) <- tolower(gsub(pattern = "_", replacement = " ", x = colnames(dat)))
+dat$doi <- paste0('<a href=\"https://doi.org/', dat$doi,'" target="_blank">', dat$doi ,"</a>")
+
+dat_plot <- subset(dat, select = -c(doi))
