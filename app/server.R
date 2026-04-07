@@ -192,6 +192,15 @@ server <- function(input, output, session) {
     }
   })
   
+  observe({
+    if (input$geom != 'geom_bar') {
+      show("y")
+    } else {
+      hide("y")
+      updateSelectInput(session, "y", selected = ".")
+    }
+  })
+  
   # Filters ---------------------------------------------------------------
   filter_ids <- reactiveVal(character(0))
   filter_counter <- reactiveVal(0)
