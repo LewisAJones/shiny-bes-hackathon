@@ -113,48 +113,8 @@ server <- function(input, output, session) {
     selection = 'none'
   )
   
-  observeEvent(input$url_search, {
-    query <- parseQueryString(input$url_search)
-    
-    # Select tab if specified
-    if (!is.null(query$tabs)) {
-      nav_select("tabs", selected = query$tabs, session)
-    }
-    
-    # Restore filters
-    if (!is.null(query$filters)) {
-      filters <- jsonlite::fromJSON(query$filters, simplifyVector = FALSE)
-      pending_filters(filters)
-      
-      # Open the accordion so selectize inputs initialize
-      accordion_panel_open("plot_accordion", "filters")
-      
-      for (i in seq_along(filters)) {
-        create_filter()
-      }
-      
-      session$onFlushed(function() {
-        for (i in seq_along(filters)) {
-          updateSelectInput(session, paste0("filter_", i, "_col"),
-                            selected = filters[[i]]$col)
-        }
-        # Close after values are set
-        shinyjs::delay(500, {
-          accordion_panel_close("plot_accordion", "filters")
-        })
-      })
-    }
-    
-    # Restore other params
-    query$tabs <- NULL
-    query$filters <- NULL
-    if (length(query) > 0) {
-      session$sendCustomMessage("updateInputs", query)
-    }
-  }, priority = 1)
-  
   # Handlers -----------------------------------------------------
-  # Handle bookmark button
+  ## Bookmark button --------------------------------------
   observeEvent(input$._bookmark_, {
     # modified from the shiny package
     exclude <- c("._bookmark_", "url_search", "url_origin", "url_hash",
@@ -203,6 +163,47 @@ server <- function(input, output, session) {
                                    application."))
   })
   
+  ## Parse bookmarking ------------------------------------------------------
+  observeEvent(input$url_search, {
+    query <- parseQueryString(input$url_search)
+    
+    # Select tab if specified
+    if (!is.null(query$tabs)) {
+      nav_select("tabs", selected = query$tabs, session)
+    }
+    
+    # Restore filters
+    if (!is.null(query$filters)) {
+      filters <- jsonlite::fromJSON(query$filters, simplifyVector = FALSE)
+      pending_filters(filters)
+      
+      # Open the accordion so selectize inputs initialize
+      accordion_panel_open("plot_accordion", "filters")
+      
+      for (i in seq_along(filters)) {
+        create_filter()
+      }
+      
+      session$onFlushed(function() {
+        for (i in seq_along(filters)) {
+          updateSelectInput(session, paste0("filter_", i, "_col"),
+                            selected = filters[[i]]$col)
+        }
+        # Close after values are set
+        shinyjs::delay(500, {
+          accordion_panel_close("plot_accordion", "filters")
+        })
+      })
+    }
+    
+    # Restore other params
+    query$tabs <- NULL
+    query$filters <- NULL
+    if (length(query) > 0) {
+      session$sendCustomMessage("updateInputs", query)
+    }
+  }, priority = 1)
+  
   # Show exclude NA from colour option if colour variable selected
   observe({
     if (input$colour != '.') {
@@ -229,7 +230,7 @@ server <- function(input, output, session) {
     }
   })
   
-  # Filters ---------------------------------------------------------------
+  ## Filters ---------------------------------------------------------------
   filter_ids <- reactiveVal(character(0))
   filter_counter <- reactiveVal(0)
   pending_filters <- reactiveVal(list())
