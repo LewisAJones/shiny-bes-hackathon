@@ -80,7 +80,7 @@ ui <- function(request) {
                       choices = c(None = '.', 
                                   Bar = "geom_bar", 
                                   Boxplot = "geom_boxplot",
-                                  Line = "geom_line",
+                                  Violin = "geom_violin",
                                   Point = "geom_point")
                     ),
                     selectInput(
