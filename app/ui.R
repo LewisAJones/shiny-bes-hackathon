@@ -45,10 +45,19 @@ ui <- function(request) {
           });
         });
       ")),
+      tags$style(HTML("
+        [data-bs-theme='dark'] .img-invert {
+          filter: invert(1);
+        }
+      ")),
     ),
     page_navbar(id = "tabs",
       theme = my_theme,
-      title = "BES Hackathon",
+      title = tagList(
+        img(src = "bes-E.png", height = "30px", class = "me-2 img-invert",
+            style = "vertical-align: middle;"),
+        span("BES Hackathon", style = "vertical-align: middle;")
+      ),
       fillable_mobile = TRUE,
       nav_panel("About",
                 strong("BES Open Science Hackathon"),
@@ -59,6 +68,8 @@ ui <- function(request) {
                 strong("Contributors"),
                 p("Contributors to the hackathon, and coauthors of the manuscript, are listed below:"),
                 p("N. Cooper (corresponding author); B.J. Allen; N. Almaani; R. Altwegg; J. Balogh; H. Balti; R.A. Barber; M.E. Barbosa de Sousa; J.G.N.  Barreat; C.F. Barrett; R. Bates; A.M.J.M. Beale; L. Bliard; N. Blömer; D. Borovyk; C. Bunnenberg; E.A. Bygate; L. Cash; N. Chatterjee; T.-W. Chen; A. Chiti; S.S.-W. Chung; H. Chuquillanqui; A. Ciezarek; A. Clarkson; E. Codling; A. Corradini; A. Cowans; S. Dartnell; A.J.S. Davis; L.L.M. De Benedictis; G.G. Deme; C. Devenish; S. Dimri; C. Dittrich; K.R. Dorheim; H.B. Drage; M.-A. Dueñas; A. Efstathiou; L.C. Evans; M.E. Ferreira Santos; A.J. Foxx; R.J. Gardiner; J. Gaudard; W. Gearty; L. Graham; V.M. Graves; H.M. Green; R.V. Greensmith; S. Gérard; A.H. Halbritter; T.R. Hartke; R.M. Hechler; B.J. Hindle; P.-Y. Hsing; S. Illanas; G. Iossa; E.E. Jackson; L.A. Jones; F.A.M. Jones; J.A. Jones; J.F. Jupke; N.N. Kaunain; R. Kennedy; M.R. Kerr; N.J. Kester;  M.  Klaassen;  O.  Konecka;  R.  Krasnow;  R.  Kukowski;  A.  Kumar;  R.  Kuminski;  K.S. Kuzey; L. Laccetti; M. Lagisz; H. Latifi; N. Lecomte; K.D. Luchmun; A. Lévêque; A. Markitantova; B.M. Marshall; E. Menares-Barraza; D. Mertens; G. Mesbahi; J. Meyer; J. Millard; L.M. Montilla; B. Moreira; A. Morera; G. Murali; M.P. Murray; F. Märker; K. Nagahawatte; C.L. Narraway; H.I. Niven; A.G. Nytko; B. Ohse; S. Patterson; H.R.P. Phillips; R. Pienaar; P. Pollo; A. Ponce; L.M.V. Porto; E.F.R. Preston; C.S. Prieul; A. Prylutska; O. Prylutskyi; K. Radman-Daw; A.M. Raharison; R. Rao; F.R. Read; S. Record; W. Rees; R. Reeve; H. Rhodes; C. Rocabado; A. Rouviere; A. Rönnfeldt; A. Sagouis; S.P. Sakhalkar; G.S. Santos; M.A. Shakur; R. Shaw; D. Siegieda; L. Šmídova; B.I. Simmons; H.G. Sisley; A. Sánchez-Tójar; F.G. Taboada; N.G. Taylor; H. Teague; K. Thrikkadeeri; V. Thuroczy; A. Varah; K.L. Vinay; C.M. Watrobska; Z.B. Williams; S.M. Windecker"),
+                img(src="bes-logo.svg", align = "left", class = "img-invert",
+                    style="max-width: 350px;"),
       ),
       nav_panel("Plot", 
                 layout_sidebar(
