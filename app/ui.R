@@ -39,11 +39,21 @@ ui <- function(request) {
           }
         }
       
+        var dtSettings = null;
         $(document).on('init.dt', function(e, settings) {
+          dtSettings = settings;
           adjustDTHeight(settings);
           $(window).on('resize', function() {
             adjustDTHeight(settings);
           });
+        });
+        
+        $(document).on('shown.bs.tab', function() {
+          if (dtSettings) {
+            setTimeout(function() {
+              adjustDTHeight(dtSettings);
+            }, 50);
+          }
         });
       ")),
       tags$style(HTML("
