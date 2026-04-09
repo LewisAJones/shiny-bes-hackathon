@@ -35,9 +35,28 @@ server <- function(input, output, session) {
            y = y_label,
            colour = if (input$colour != '.') str_to_title(input$colour) else NULL,
            fill = if (input$fill != '.') str_to_title(input$fill) else NULL) +
-      scale_colour_viridis_d() +
-      scale_fill_viridis_d(na.value = "grey50") +
       theme_bw(paper = "#f8f3ef", ink = "#212121", base_size = 20)
+    
+    journal_colours <- c(
+      "Ecological Solutions and Evidence" = "#A2DACC", 
+      "Functional Ecology" = "#EDC04E",
+      "Journal of Animal Ecology" = "#AC92ED",
+      "Journal of Applied Ecology" = "#45B599",
+      "Journal of Ecology" = "#AECEF6",
+      "Methods in Ecology and Evolution" = "#e3626f",
+      "People and Nature" = "#DDAC93"
+    )
+    if (input$colour == "journal") {
+      p <- p + scale_colour_manual(values = journal_colours)
+    } else {
+      p <- p + scale_colour_viridis_d(na.value = "grey50")
+    }
+    
+    if (input$fill == "journal") {
+      p <- p + scale_fill_manual(values = journal_colours)
+    } else {
+      p <- p + scale_fill_viridis_d(na.value = "grey50")
+    }
     
     if (input$x != '.') p <- p + aes(x = .data[[input$x]])
     
