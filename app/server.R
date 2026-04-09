@@ -26,7 +26,7 @@ server <- function(input, output, session) {
     p <- ggplot(data = dat_plot_filt()) +
       scale_colour_viridis_d() +
       scale_fill_viridis_d(na.value = "grey50") +
-      theme_bw()
+      theme_bw(paper = "#f8f3ef", ink = "#212121", base_size = 20)
     
     if (input$x != '.') p <- p + aes(x = .data[[input$x]])
     
