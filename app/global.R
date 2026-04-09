@@ -10,6 +10,9 @@ jscode <- "
 shinyjs.init = function() {
   $('#url_search').val(window.parent.location.search);
   $('#url_origin').val(window.parent.location.origin + window.parent.location.pathname);
+  $(window.parent).on('hashchange', function (e) {
+    $('#url_hash').val(window.parent.location.hash).change();
+  });
 }"
 
 ## Theme

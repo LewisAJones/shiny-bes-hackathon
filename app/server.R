@@ -157,7 +157,7 @@ server <- function(input, output, session) {
   # Handle bookmark button
   observeEvent(input$._bookmark_, {
     # modified from the shiny package
-    exclude <- c("._bookmark_", "url_search", "url_origin",
+    exclude <- c("._bookmark_", "url_search", "url_origin", "url_hash",
                  "table_state", "table_search_columns")
     input_vals <- shiny:::serializeReactiveValues(input, exclude = exclude)
     # remove DT- and filter-associated inputs
@@ -300,5 +300,25 @@ server <- function(input, output, session) {
   observeEvent(input$add_filter, {
     create_filter()
   })
+  
+  ## Back/forward browser actions ----------------------------------
+  observeEvent(input$url_hash, {
+    currentHash <- sub("#", "", input$url_hash)
+    if (is.null(input$tabs) || !is.null(currentHash) && currentHash != input$tabs) {
+      freezeReactiveValue(input, "tabs")
+      nav_select("tabs", selected = currentHash, session)
+    }
+  }, priority = 1)
+  
+  ## push changes to the sub-URL to the browser history so that back/forward browser buttons work
+  observeEvent(input$tabs, {
+    currentHash <- sub("#", "", input$url_hash)
+    pushQueryString <- paste0("#", input$tabs)
+    if (is.null(currentHash) || currentHash != input$tabs) {
+      freezeReactiveValue(input, "tabs")
+      runjs(paste0("window.parent.history.pushState(null, null, '", pushQueryString, "')"))
+      updateTextInput(session, "url_hash", value = pushQueryString)
+    }
+  }, priority = 0)
   
 }

@@ -6,6 +6,7 @@ ui <- function(request) {
     extendShinyjs(text = jscode, functions = c()),
     hidden(textInput("url_search", NULL, value = "")),
     hidden(textInput("url_origin", NULL, value = "")),
+    hidden(textInput("url_hash", NULL, value = "")),
     tags$head(
       tags$script(HTML("
         Shiny.addCustomMessageHandler('updateInputs', function(params) {
