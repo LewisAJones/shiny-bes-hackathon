@@ -24,6 +24,7 @@ library(DT)
 library(munsell)
 # General plotting
 library(ggplot2)
+library(stringr)
 
 # Data ------------------------------------------------------------------
 # Download required data

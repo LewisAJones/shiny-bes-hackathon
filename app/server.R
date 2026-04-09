@@ -23,7 +23,18 @@ server <- function(input, output, session) {
   
   # Plot ------------------------------------------------------------------
   output$plot <- renderPlot({
+    y_label <- if (input$geom == 'geom_bar') {
+      "Count"
+    } else if (input$y != '.') {
+      str_to_title(input$y)
+    } else {
+      NULL
+    }
     p <- ggplot(data = dat_plot_filt()) +
+      labs(x = if (input$x != '.') str_to_title(input$x) else NULL,
+           y = y_label,
+           colour = if (input$colour != '.') str_to_title(input$colour) else NULL,
+           fill = if (input$fill != '.') str_to_title(input$fill) else NULL) +
       scale_colour_viridis_d() +
       scale_fill_viridis_d(na.value = "grey50") +
       theme_bw(paper = "#f8f3ef", ink = "#212121", base_size = 20)
