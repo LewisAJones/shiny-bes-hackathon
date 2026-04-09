@@ -164,16 +164,31 @@ ui <- function(request) {
                           "Filters ",
                           tooltip(
                             icon("info-circle"),
-                            paste("Add filters to subset the data. You can",
-                                  "add multiple filters and they will be",
-                                  "combined with AND logic.")
+                            paste("Add filters to subset to specific rows of",
+                                  "data. You can add multiple filters and they",
+                                  "will be combined with AND logic.")
                           )
                         ),
                         value = "filters",
                         div(id = "filter_container"),
                         actionButton("add_filter", "Add filter", 
                                      icon = icon("plus"))
-                      )
+                      ),
+                      accordion_panel(
+                        span(
+                          "Exclusions ",
+                          tooltip(
+                            icon("info-circle"),
+                            paste("Add exclusions to discard specific rows of",
+                                  "data. You can add multiple exclusions and",
+                                  "they will be combined with OR logic.")
+                          )
+                        ),
+                        value = "excludes",
+                        div(id = "exclude_container"),
+                        actionButton("add_exclude", "Add exclusion", 
+                                     icon = icon("plus"))
+                      ),
                     ),
                     checkboxInput(
                       inputId = 'jitter', 

@@ -12,6 +12,15 @@ server <- function(input, output, session) {
         tmp <- tmp[tmp[[col]] %in% vals, ]
       }
     }
+    # Apply dynamic exclusions
+    for (id in exclude_ids()) {
+      col <- input[[paste0(id, "_col")]]
+      vals <- input[[paste0(id, "_vals")]]
+      if (!is.null(col) && col != "" && !is.null(vals)) {
+        tmp <- tmp[!(tmp[[col]] %in% vals), ]
+      }
+    }
+    # Apply NA exclusions
     if (input$exclude_na_colour != FALSE && input$colour != '.') {
       tmp <- tmp[!is.na(tmp[[input$colour]]), ]
     }
@@ -118,10 +127,11 @@ server <- function(input, output, session) {
   observeEvent(input$._bookmark_, {
     # modified from the shiny package
     exclude <- c("._bookmark_", "url_search", "url_origin", "url_hash",
-                 "table_state", "table_search_columns")
+                 "table_state", "table_search_columns",
+                 "add_filter", "add_exclude", "plot_accordion")
     input_vals <- shiny:::serializeReactiveValues(input, exclude = exclude)
     # remove DT- and filter-associated inputs
-    input_vals <- input_vals[!grepl("^(table_|filter_|add_filter|plot_accordion)",
+    input_vals <- input_vals[!grepl("^(table_|filter_\\d|exclude_\\d)",
                                     names(input_vals))]
     
     # remove any inputs that are still their default values
@@ -134,6 +144,16 @@ server <- function(input, output, session) {
       vals <- input[[paste0(id, "_vals")]]
       if (!is.null(col) && col != "") {
         filters[[length(filters) + 1]] <- list(col = col, vals = vals)
+      }
+    }
+    
+    # Serialize active excludes as JSON
+    excludes <- list()
+    for (id in exclude_ids()) {
+      col <- input[[paste0(id, "_col")]]
+      vals <- input[[paste0(id, "_vals")]]
+      if (!is.null(col) && col != "") {
+        excludes[[length(excludes) + 1]] <- list(col = col, vals = vals)
       }
     }
     
@@ -156,6 +176,14 @@ server <- function(input, output, session) {
       res <- paste0(res, sep, "filters=",
                     httpuv::encodeURIComponent(
                       jsonlite::toJSON(filters, auto_unbox = TRUE)))
+    }
+    
+    # If any exclusion values are present, add them
+    if (length(excludes) > 0) {
+      sep <- if (nchar(res) > 0) "&" else "?"
+      res <- paste0(res, sep, "excludes=",
+                    httpuv::encodeURIComponent(
+                      jsonlite::toJSON(excludes, auto_unbox = TRUE)))
     }
     
     showModal(urlModal(paste0(input$url_origin, res),
@@ -196,14 +224,67 @@ server <- function(input, output, session) {
       })
     }
     
+    # Restore filters and exclusions
+    has_filters <- !is.null(query$filters)
+    has_excludes <- !is.null(query$excludes)
+    
+    if (has_filters || has_excludes) {
+      # Open all needed panels at once
+      panels_to_open <- c(
+        if (has_filters) "filters",
+        if (has_excludes) "excludes"
+      )
+      accordion_panel_open("plot_accordion", panels_to_open)
+    }
+    
+    if (has_filters) {
+      filters <- jsonlite::fromJSON(query$filters, simplifyVector = FALSE)
+      pending_filters(filters)
+      for (i in seq_along(filters)) {
+        create_filter()
+      }
+    }
+    
+    if (has_excludes) {
+      excludes <- jsonlite::fromJSON(query$excludes, simplifyVector = FALSE)
+      pending_excludes(excludes)
+      for (i in seq_along(excludes)) {
+        create_exclude()
+      }
+    }
+    
+    if (has_filters || has_excludes) {
+      session$onFlushed(function() {
+        # Set all columns in one flush
+        if (has_filters) {
+          for (i in seq_along(filters)) {
+            updateSelectInput(session, paste0("filter_", i, "_col"),
+                              selected = filters[[i]]$col)
+          }
+        }
+        if (has_excludes) {
+          for (i in seq_along(excludes)) {
+            updateSelectInput(session, paste0("exclude_", i, "_col"),
+                              selected = excludes[[i]]$col)
+          }
+        }
+        # Close panels after values are set
+        shinyjs::delay(500, {
+          accordion_panel_close("plot_accordion", panels_to_open)
+        })
+      })
+    }
+    
     # Restore other params
     query$tabs <- NULL
     query$filters <- NULL
+    query$excludes <- NULL
     if (length(query) > 0) {
       session$sendCustomMessage("updateInputs", query)
     }
   }, priority = 1)
   
+  ## Show/hide options ------------------------------------------------------
   # Show exclude NA from colour option if colour variable selected
   observe({
     if (input$colour != '.') {
@@ -300,6 +381,78 @@ server <- function(input, output, session) {
   # Handle add filter button
   observeEvent(input$add_filter, {
     create_filter()
+  })
+  
+  ## Exclusions ---------------------------------------------------------------
+  exclude_ids <- reactiveVal(character(0))
+  exclude_counter <- reactiveVal(0)
+  pending_excludes <- reactiveVal(list())
+  
+  create_exclude <- function() {
+    n <- exclude_counter() + 1
+    exclude_counter(n)
+    id <- paste0("exclude_", n)
+    exclude_ids(c(exclude_ids(), id))
+    
+    insertUI(
+      selector = "#exclude_container",
+      where = "beforeEnd",
+      ui = div(
+        id = id,
+        class = "mb-3 p-2 border rounded",
+        div(
+          class = "d-flex justify-content-between align-items-center mb-1",
+          tags$strong(paste("Exclusion", n)),
+          actionButton(
+            inputId = paste0(id, "_remove"),
+            label = NULL,
+            icon = icon("xmark"),
+            class = "btn-sm btn-outline-danger"
+          )
+        ),
+        selectInput(
+          inputId = paste0(id, "_col"),
+          label = "Column",
+          choices = c("Select..." = "", colnames(dat))
+        ),
+        uiOutput(paste0(id, "_values_ui"))
+      )
+    )
+    
+    # Render value picker based on selected column
+    output[[paste0(id, "_values_ui")]] <- renderUI({
+      col <- input[[paste0(id, "_col")]]
+      req(col, col != "")
+      vals <- sort(unique(dat[[col]]))
+      vals <- vals[!is.na(vals)]
+      
+      # Check for pending restore values
+      pe <- pending_excludes()
+      exclude_num <- as.integer(sub("exclude_", "", id))
+      selected_vals <- NULL
+      if (exclude_num <= length(pe) && !is.null(pe[[exclude_num]]$vals)) {
+        selected_vals <- unlist(pe[[exclude_num]]$vals)
+      }
+      
+      selectInput(
+        inputId = paste0(id, "_vals"),
+        label = "Values",
+        choices = vals,
+        selected = selected_vals,
+        multiple = TRUE
+      )
+    })
+    
+    # Remove handler
+    observeEvent(input[[paste0(id, "_remove")]], {
+      removeUI(selector = paste0("#", id))
+      exclude_ids(setdiff(exclude_ids(), id))
+    }, once = TRUE)
+  }
+  
+  # Handle add filter button
+  observeEvent(input$add_exclude, {
+    create_exclude()
   })
   
   ## Back/forward browser actions ----------------------------------
