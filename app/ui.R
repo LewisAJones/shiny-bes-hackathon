@@ -131,7 +131,7 @@ ui <- function(request) {
                       tags$img(src = "example-plot.png", alt = "Description of image", align = "left", style="width: 100%"),
                       tags$figcaption(style = "color: #777; font-style: italic;",
                                       "Code availability for articles published within British Ecological Society journals.",
-                                      tags$a("Want to interact with this figure?", href = "https://www.lewisajones.com/shiny-bes-hackathon/?tabs=Plot&geom=geom_bar&x=code%20availability&fill=journal&filters=%5B%7B%22col%22%3A%22code%20availability%22%2C%22vals%22%3A%5B%22Yes%22%2C%22No%22%5D%7D%5D", target = "_blank"))
+                                      tags$a("Want to interact with this figure?", href = "https://www.lewisajones.com/shiny-bes-hackathon/#Plot"))
                       ),
                     img(src = "bes-logo.svg", class = "img-invert",
                         style="height: 200px; padding-left: 20%; padding-right: 20%")
@@ -148,12 +148,14 @@ ui <- function(request) {
                                   Bar = "geom_bar", 
                                   Boxplot = "geom_boxplot",
                                   Violin = "geom_violin",
-                                  Point = "geom_point")
+                                  Point = "geom_point"),
+                      selected = "geom_bar"
                     ),
                     selectInput(
                       inputId = 'x', 
                       label = 'X-axis variable', 
-                      choices = c(None='.', colnames(dat_plot))
+                      choices = c(None='.', colnames(dat_plot)),
+                      selected = "code availability"
                     ), 
                     selectInput(
                       inputId = 'y', 
@@ -185,7 +187,8 @@ ui <- function(request) {
                         selectInput(
                           inputId = 'fill', 
                           label = 'Fill by', 
-                          choices = c(None='.', colnames(dat_plot))
+                          choices = c(None='.', colnames(dat_plot)),
+                          selected = "journal"
                         ),
                         hidden(checkboxInput(
                           inputId = "exclude_na_fill",
