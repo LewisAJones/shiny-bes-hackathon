@@ -66,11 +66,15 @@ ui <- function(request) {
           height: calc(75vh - 200px) !important;
           max-height: calc(75vh - 200px) !important;
         }
+        .shiny-plot-output {
+          margin-bottom: 60px;
+        }
         .site-footer {
-          text-align: justify;
-          font-size: 0.6em;
-          padding: 15px;
+          position: fixed;
           width: 100%;
+          bottom: 0;
+          padding: 15px;
+          z-index: 1000;
         }
       ")),
     ),
@@ -95,7 +99,7 @@ ui <- function(request) {
                       href = "https://doi.org/10.32942/X26W9V",
                       target = "_blank",
                       class = "btn btn-default",
-                      style = "font-weight: bold",
+                      style = "font-weight: bold; border-color: black;",
                       download = NA
                     ),
                     tags$a(
@@ -103,13 +107,14 @@ ui <- function(request) {
                       href = "https://anonymous.4open.science/r/reproduce-reuse-recycle-71FD",
                       target = "_blank",
                       class = "btn btn-default",
-                      style = "font-weight: bold",
+                      style = "font-weight: bold; border-color: black;",
                       download = NA
                     ),
                     br(),
                     br(),
-                    img(src = "bes-logo.svg", align = "left", class = "img-invert",
-                        style="max-width: 200px;")
+                    h4("Contributors"),
+                    p("A number of individuals contributed to the hackathon and the development of the report. A full list of these contributors is included below:"),
+                    p("N. Cooper (corresponding author); B.J. Allen; N. Almaani; R. Altwegg; J. Balogh; H. Balti; R.A. Barber; M.E. Barbosa de Sousa; J.G.N.  Barreat; C.F. Barrett; R. Bates; A.M.J.M. Beale; L. Bliard; N. Blömer; D. Borovyk; C. Bunnenberg; E.A. Bygate; L. Cash; N. Chatterjee; T.-W. Chen; A. Chiti; S.S.-W. Chung; H. Chuquillanqui; A. Ciezarek; A. Clarkson; E. Codling; A. Corradini; A. Cowans; S. Dartnell; A.J.S. Davis; L.L.M. De Benedictis; G.G. Deme; C. Devenish; S. Dimri; C. Dittrich; K.R. Dorheim; H.B. Drage; M.-A. Dueñas; A. Efstathiou; L.C. Evans; M.E. Ferreira Santos; A.J. Foxx; R.J. Gardiner; J. Gaudard; W. Gearty; L. Graham; V.M. Graves; H.M. Green; R.V. Greensmith; S. Gérard; A.H. Halbritter; T.R. Hartke; R.M. Hechler; B.J. Hindle; P.-Y. Hsing; S. Illanas; G. Iossa; E.E. Jackson; L.A. Jones; F.A.M. Jones; J.A. Jones; J.F. Jupke; N.N. Kaunain; R. Kennedy; M.R. Kerr; N.J. Kester;  M.  Klaassen;  O.  Konecka;  R.  Krasnow;  R.  Kukowski;  A.  Kumar;  R.  Kuminski;  K.S. Kuzey; L. Laccetti; M. Lagisz; H. Latifi; N. Lecomte; K.D. Luchmun; A. Lévêque; A. Markitantova; B.M. Marshall; E. Menares-Barraza; D. Mertens; G. Mesbahi; J. Meyer; J. Millard; L.M. Montilla; B. Moreira; A. Morera; G. Murali; M.P. Murray; F. Märker; K. Nagahawatte; C.L. Narraway; H.I. Niven; A.G. Nytko; B. Ohse; S. Patterson; H.R.P. Phillips; R. Pienaar; P. Pollo; A. Ponce; L.M.V. Porto; E.F.R. Preston; C.S. Prieul; A. Prylutska; O. Prylutskyi; K. Radman-Daw; A.M. Raharison; R. Rao; F.R. Read; S. Record; W. Rees; R. Reeve; H. Rhodes; C. Rocabado; A. Rouviere; A. Rönnfeldt; A. Sagouis; S.P. Sakhalkar; G.S. Santos; M.A. Shakur; R. Shaw; D. Siegieda; L. Šmídova; B.I. Simmons; H.G. Sisley; A. Sánchez-Tójar; F.G. Taboada; N.G. Taylor; H. Teague; K. Thrikkadeeri; V. Thuroczy; A. Varah; K.L. Vinay; C.M. Watrobska; Z.B. Williams; S.M. Windecker.")
                   ),
                   tags$div(
                     style = "flex: 0.8;",
@@ -117,12 +122,12 @@ ui <- function(request) {
                       tags$img(src = "example-plot.png", alt = "Description of image", align = "left", style="width: 100%"),
                       tags$figcaption(style = "color: #777; font-style: italic;",
                                       "Code availability for articles published within British Ecological Society journals.",
-                                      tags$a("Want to interact with this figure?", href = "https://www.lewisajones.com/shiny-bes-hackathon/?tabs=Plot&geom=geom_bar&x=code%20availability&fill=journal&filters=%5B%7B%22col%22%3A%22code%20availability%22%2C%22vals%22%3A%5B%22Yes%22%2C%22No%22%5D%7D%5D", target = "_blank"))),
+                                      tags$a("Want to interact with this figure?", href = "https://www.lewisajones.com/shiny-bes-hackathon/?tabs=Plot&geom=geom_bar&x=code%20availability&fill=journal&filters=%5B%7B%22col%22%3A%22code%20availability%22%2C%22vals%22%3A%5B%22Yes%22%2C%22No%22%5D%7D%5D", target = "_blank"))
+                      ),
+                    img(src = "bes-logo.svg", class = "img-invert",
+                        style="height: 200px; padding-left: 20%; padding-right: 20%")
                   )
                 ),
-                strong("Contributors"),
-                p("A number of individuals contributed to the hackathon and the development of the report. A full list of these contributors is included below:"),
-                p("N. Cooper (corresponding author); B.J. Allen; N. Almaani; R. Altwegg; J. Balogh; H. Balti; R.A. Barber; M.E. Barbosa de Sousa; J.G.N.  Barreat; C.F. Barrett; R. Bates; A.M.J.M. Beale; L. Bliard; N. Blömer; D. Borovyk; C. Bunnenberg; E.A. Bygate; L. Cash; N. Chatterjee; T.-W. Chen; A. Chiti; S.S.-W. Chung; H. Chuquillanqui; A. Ciezarek; A. Clarkson; E. Codling; A. Corradini; A. Cowans; S. Dartnell; A.J.S. Davis; L.L.M. De Benedictis; G.G. Deme; C. Devenish; S. Dimri; C. Dittrich; K.R. Dorheim; H.B. Drage; M.-A. Dueñas; A. Efstathiou; L.C. Evans; M.E. Ferreira Santos; A.J. Foxx; R.J. Gardiner; J. Gaudard; W. Gearty; L. Graham; V.M. Graves; H.M. Green; R.V. Greensmith; S. Gérard; A.H. Halbritter; T.R. Hartke; R.M. Hechler; B.J. Hindle; P.-Y. Hsing; S. Illanas; G. Iossa; E.E. Jackson; L.A. Jones; F.A.M. Jones; J.A. Jones; J.F. Jupke; N.N. Kaunain; R. Kennedy; M.R. Kerr; N.J. Kester;  M.  Klaassen;  O.  Konecka;  R.  Krasnow;  R.  Kukowski;  A.  Kumar;  R.  Kuminski;  K.S. Kuzey; L. Laccetti; M. Lagisz; H. Latifi; N. Lecomte; K.D. Luchmun; A. Lévêque; A. Markitantova; B.M. Marshall; E. Menares-Barraza; D. Mertens; G. Mesbahi; J. Meyer; J. Millard; L.M. Montilla; B. Moreira; A. Morera; G. Murali; M.P. Murray; F. Märker; K. Nagahawatte; C.L. Narraway; H.I. Niven; A.G. Nytko; B. Ohse; S. Patterson; H.R.P. Phillips; R. Pienaar; P. Pollo; A. Ponce; L.M.V. Porto; E.F.R. Preston; C.S. Prieul; A. Prylutska; O. Prylutskyi; K. Radman-Daw; A.M. Raharison; R. Rao; F.R. Read; S. Record; W. Rees; R. Reeve; H. Rhodes; C. Rocabado; A. Rouviere; A. Rönnfeldt; A. Sagouis; S.P. Sakhalkar; G.S. Santos; M.A. Shakur; R. Shaw; D. Siegieda; L. Šmídova; B.I. Simmons; H.G. Sisley; A. Sánchez-Tójar; F.G. Taboada; N.G. Taylor; H. Teague; K. Thrikkadeeri; V. Thuroczy; A. Varah; K.L. Vinay; C.M. Watrobska; Z.B. Williams; S.M. Windecker.")
       ),
       nav_panel("Plot", 
                 layout_sidebar(
@@ -258,15 +263,13 @@ ui <- function(request) {
       )
     ),
     tags$footer(
-      class = "footer mt-auto py-3 bg-light",
+      class = "site-footer mt-auto py-3 bg-light",
       tags$div(
-        class = "site-footer",
-        tags$span("N. Cooper; B.J. Allen; N. Almaani; R. Altwegg; J. Balogh; H. Balti; R.A. Barber; M.E. Barbosa de Sousa; J.G.N. Barreat; C.F. Barrett; R. Bates; A.M.J.M. Beale; L. Bliard; N. Blömer; D. Borovyk; C. Bunnenberg; E.A. Bygate; L. Cash; N. Chatterjee; T.-W. Chen; A. Chiti; S.S.-W. Chung; H. Chuquillanqui; A. Ciezarek; A. Clarkson; E. Codling; A. Corradini; A. Cowans; S. Dartnell; A.J.S. Davis; L.L.M. De Benedictis; G.G. Deme; C. Devenish; S. Dimri; C. Dittrich; K.R. Dorheim; H.B. Drage; M.-A. Dueñas; A. Efstathiou; L.C. Evans; M.E. Ferreira Santos; A.J. Foxx; R.J. Gardiner; J. Gaudard; W. Gearty; L. Graham; V.M. Graves; H.M. Green; R.V. Greensmith; S. Gérard; A.H. Halbritter; T.R. Hartke; R.M. Hechler; B.J. Hindle; P.-Y. Hsing; S. Illanas; G. Iossa; E.E. Jackson; L.A. Jones; F.A.M. Jones; J.A. Jones; J.F. Jupke; N.N. Kaunain; R. Kennedy; M.R. Kerr; N.J. Kester; M. Klaassen; O. Konecka; R. Krasnow; R. Kukowski; A. Kumar; R. Kuminski; K.S. Kuzey; L. Laccetti; M. Lagisz; H. Latifi; N. Lecomte; K.D. Luchmun; A. Lévêque; A. Markitantova; B.M. Marshall; E. Menares-Barraza; D. Mertens; G. Mesbahi; J. Meyer; J. Millard; L.M. Montilla; B. Moreira; A. Morera; G. Murali; M.P. Murray; F. Märker; K. Nagahawatte; C.L. Narraway; H.I. Niven; A.G. Nytko; B. Ohse; S. Patterson; H.R.P. Phillips; R. Pienaar; P. Pollo; A. Ponce; L.M.V. Porto; E.F.R. Preston; C.S. Prieul; A. Prylutska; O. Prylutskyi; K. Radman-Daw; A.M. Raharison; R. Rao; F.R. Read; S. Record; W. Rees; R. Reeve; H. Rhodes; C. Rocabado; A. Rouviere; A. Rönnfeldt; A. Sagouis; S.P. Sakhalkar; G.S. Santos; M.A. Shakur; R. Shaw; D. Siegieda; L. Šmídova; B.I. Simmons; H.G. Sisley; A. Sánchez-Tójar; F.G. Taboada; N.G. Taylor; H. Teague; K. Thrikkadeeri; V. Thuroczy; A. Varah; K.L. Vinay; C.M. Watrobska; Z.B. Williams; S.M. Windecker. (2026). Data-and code-archiving in the British Ecological Society journals: present status and recommendations for future improvements."),
+        tags$span("Cooper et al. (2026). Data-and code-archiving in the British Ecological Society journals: present status and recommendations for future improvements."),
         tags$em("EcoEvoRxiv."),
         tags$a("https://doi.org/10.32942/X26W9V", href = "https://doi.org/10.32942/X26W9V"),
         tags$br(),
-        tags$br(),
-        tags$span("Shiny App created by Lewis A. Jones, William Gearty, and Bethany J. Allen")
+        tags$span("Shiny App created by Lewis A. Jones, William Gearty, and Bethany J. Allen.")
       )
     )
   )
