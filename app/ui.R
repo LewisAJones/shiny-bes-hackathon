@@ -8,7 +8,7 @@ ui <- function(request) {
     hidden(textInput("url_origin", NULL, value = "")),
     hidden(textInput("url_hash", NULL, value = "")),
     tags$head(
-      tags$link(rel = "icon", type = "image/png", href = "bes-E.png"),
+      tags$link(rel = "icon", type = "image/x-icon", href = "bes-E.ico"),
       tags$script(HTML("
         Shiny.addCustomMessageHandler('updateInputs', function(params) {
           for (var id in params) {
@@ -78,7 +78,7 @@ ui <- function(request) {
       title = tagList(
         img(src = "bes-E.png", height = "30px", class = "me-2 img-invert",
             style = "vertical-align: middle;"),
-        span("British Ecological Society", style = "vertical-align: middle;")
+        span("Data & Code Archiving", style = "vertical-align: middle;")
       ),
       fillable_mobile = TRUE,
       nav_panel("About",
@@ -86,7 +86,7 @@ ui <- function(request) {
                   style = "display: flex; gap: 16px; align-items: flex-start;",
                   tags$div(
                     style = "flex: 1.2;",
-                    h3("Data-and code-archiving in the British Ecological Society journals: present status and recommendations for future improvements"),
+                    h3("Data- and code-archiving in the British Ecological Society journals: present status and recommendations for future improvements"),
                     p("On the 29th and 30th of September 2025, the British Ecological Society (BES) organised a hackathon, with the goal of collecting data on the availability of data and code for papers published in their respective journals (Ecological Solutions and Evidence, Functional Ecology, Journal of Animal Ecology, Journal of Applied Ecology, Journal of Ecology, Methods in Ecology and Evolution, and People and Nature). The hackathon included in-person participation at BES Headquarters and Natural History Museum, London, and remote participation via a Discord server."),
                     p("This Shiny Application is a companion to the manuscript reporting the findings of the hackathon (Cooper et al., 2025), enabling users to explore the data collected during the hackathon. The raw data can be visualised through the 'Plot' tab, and individual records inspected through the 'Table' tab. If preferred, the raw data can also be downloaded via the button below."),
                     tags$a(
