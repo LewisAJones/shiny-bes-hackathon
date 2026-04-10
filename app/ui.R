@@ -8,7 +8,6 @@ ui <- function(request) {
     hidden(textInput("url_origin", NULL, value = "")),
     hidden(textInput("url_hash", NULL, value = "")),
     tags$head(
-      tags$link(rel = "icon", type = "image/png", href = "bes-E.png"),
       tags$link(rel = "shortcut icon", href = "favicon.ico"),
       tags$script(HTML("
         Shiny.addCustomMessageHandler('updateInputs', function(params) {

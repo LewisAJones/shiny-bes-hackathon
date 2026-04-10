@@ -61,7 +61,10 @@ jobs:
         shell: Rscript {0}
         run: |
           shinylive::export("app", "site", assets_version = "0.10.6",
-                            template_params = list(title = "BES Hackathon"))
+                            template_params = list(title = "BES Data & Code Archiving"))
+
+      - name: Copy favicons
+        run: cp -r app/www/favicon/* site/
 
       - name: Upload site artifact
         if: github.ref == 'refs/heads/main'
