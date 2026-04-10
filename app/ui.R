@@ -131,7 +131,7 @@ ui <- function(request) {
                       tags$img(src = "example-plot.png", alt = "Description of image", align = "left", style="width: 100%"),
                       tags$figcaption(style = "color: #777; font-style: italic;",
                                       "Code availability for articles published within British Ecological Society journals.",
-                                      tags$a("Want to interact with this figure?", href = "#Plot"))
+                                      tags$a("Want to interact with this figure?", href = "/#Plot"))
                       ),
                     img(src = "bes-logo.svg", class = "img-invert",
                         style="height: 200px; padding-left: 20%; padding-right: 20%")
