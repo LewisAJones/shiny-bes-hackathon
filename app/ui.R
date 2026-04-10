@@ -8,16 +8,17 @@ ui <- function(request) {
     hidden(textInput("url_origin", NULL, value = "")),
     hidden(textInput("url_hash", NULL, value = "")),
     tags$head(
+      tags$title("BES Data & Code Archiving"),
       tags$link(rel = "shortcut icon",
-                href = "/shiny-bes-hackathon/favicon.ico"),
+                href = "/favicon/favicon.ico"),
       tags$link(rel = "icon", type = "image/png",
-                href = "/shiny-bes-hackathon/favicon-96x96.png", sizes = "96x96"),
+                href = "/favicon/favicon-96x96.png", sizes = "96x96"),
       tags$link(rel = "icon", type = "image/svg+xml",
-                href = "/shiny-bes-hackathon/favicon.svg"),
+                href = "/favicon/favicon.svg"),
       tags$link(rel = "apple-touch-icon", sizes = "180x180",
-                href = "/shiny-bes-hackathon/apple-touch-icon.png"),
+                href = "/favicon/apple-touch-icon.png"),
       tags$link(rel = "manifest",
-                href = "/shiny-bes-hackathon/site.webmanifest"),
+                href = "/favicon/site.webmanifest"),
       tags$script(HTML("
         Shiny.addCustomMessageHandler('updateInputs', function(params) {
           for (var id in params) {

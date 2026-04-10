@@ -60,8 +60,7 @@ jobs:
       - name: Build site
         shell: Rscript {0}
         run: |
-          shinylive::export("app", "site", assets_version = "0.10.6",
-                            template_params = list(title = "BES Data & Code Archiving"))
+          source("build_app.R")
 
       - name: Copy favicons
         run: cp -r app/www/favicon/* site/
