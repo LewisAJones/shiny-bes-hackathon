@@ -8,6 +8,7 @@ ui <- function(request) {
     hidden(textInput("url_origin", NULL, value = "")),
     hidden(textInput("url_hash", NULL, value = "")),
     tags$head(
+      tags$link(rel = "icon", type = "image/png", href = "bes-E.png"),
       tags$script(HTML("
         Shiny.addCustomMessageHandler('updateInputs', function(params) {
           for (var id in params) {
@@ -60,6 +61,16 @@ ui <- function(request) {
         [data-bs-theme='dark'] .img-invert {
           filter: invert(1);
         }
+        #table .dataTables_scrollBody {
+          height: calc(75vh - 200px) !important;
+          max-height: calc(75vh - 200px) !important;
+        }
+        .site-footer {
+          text-align: justify;
+          font-size: 0.6em;
+          padding: 15px;
+          width: 100%;
+        }
       ")),
     ),
     page_navbar(id = "tabs",
@@ -67,20 +78,50 @@ ui <- function(request) {
       title = tagList(
         img(src = "bes-E.png", height = "30px", class = "me-2 img-invert",
             style = "vertical-align: middle;"),
-        span("BES Hackathon", style = "vertical-align: middle;")
+        span("British Ecological Society", style = "vertical-align: middle;")
       ),
       fillable_mobile = TRUE,
       nav_panel("About",
-                strong("BES Open Science Hackathon"),
-                p("On 29th and 30th September 2025, the British Ecological Society (BES) organised a hackathon, with the goal of collecting data on the availability of data and code for papers published in BES journals. The hackathon included in-person participation at BES Headquarters and Natural History Museum, London, and remote participation via a Discord server."),
-                strong("Manuscript"),
-                p("A manuscript reporting on the findings of the hackathon is now available on EcoEvoRxiv."),
-                p(HTML("Cooper et al., 2025. Data- and code-archiving in the British Ecological Society journals: present status and recommendations for future improvements. EcoEvoRxiv. <a href='https://doi.org/10.32942/X26W9V' target='_blank'>https://doi.org/10.32942/X26W9V</a>")),
+                tags$div(
+                  style = "display: flex; gap: 16px; align-items: flex-start;",
+                  tags$div(
+                    style = "flex: 1.2;",
+                    h3("Data-and code-archiving in the British Ecological Society journals: present status and recommendations for future improvements"),
+                    p("On the 29th and 30th of September 2025, the British Ecological Society (BES) organised a hackathon, with the goal of collecting data on the availability of data and code for papers published in their respective journals (Ecological Solutions and Evidence, Functional Ecology, Journal of Animal Ecology, Journal of Applied Ecology, Journal of Ecology, Methods in Ecology and Evolution, and People and Nature). The hackathon included in-person participation at BES Headquarters and Natural History Museum, London, and remote participation via a Discord server."),
+                    p("This Shiny Application is a companion to the manuscript reporting the findings of the hackathon (Cooper et al., 2025), enabling users to explore the data collected during the hackathon. The raw data can be visualised through the 'Plot' tab, and individual records inspected through the 'Table' tab. If preferred, the raw data can also be downloaded via the button below."),
+                    tags$a(
+                      "READ THE REPORT",
+                      href = "https://doi.org/10.32942/X26W9V",
+                      target = "_blank",
+                      class = "btn btn-default",
+                      style = "font-weight: bold",
+                      download = NA
+                    ),
+                    tags$a(
+                      "DOWNLOAD THE DATA",
+                      href = "https://anonymous.4open.science/r/reproduce-reuse-recycle-71FD",
+                      target = "_blank",
+                      class = "btn btn-default",
+                      style = "font-weight: bold",
+                      download = NA
+                    ),
+                    br(),
+                    br(),
+                    img(src = "bes-logo.svg", align = "left", class = "img-invert",
+                        style="max-width: 200px;")
+                  ),
+                  tags$div(
+                    style = "flex: 0.8;",
+                    tags$figure(
+                      tags$img(src = "example-plot.png", alt = "Description of image", align = "left", style="width: 100%"),
+                      tags$figcaption(style = "color: #777; font-style: italic;",
+                                      "Code availability for articles published within British Ecological Society journals.",
+                                      tags$a("Want to interact with this figure?", href = "https://www.lewisajones.com/shiny-bes-hackathon/?tabs=Plot&geom=geom_bar&x=code%20availability&fill=journal&filters=%5B%7B%22col%22%3A%22code%20availability%22%2C%22vals%22%3A%5B%22Yes%22%2C%22No%22%5D%7D%5D", target = "_blank"))),
+                  )
+                ),
                 strong("Contributors"),
-                p("Contributors to the hackathon, and coauthors of the manuscript, are listed below:"),
-                p("N. Cooper (corresponding author); B.J. Allen; N. Almaani; R. Altwegg; J. Balogh; H. Balti; R.A. Barber; M.E. Barbosa de Sousa; J.G.N.  Barreat; C.F. Barrett; R. Bates; A.M.J.M. Beale; L. Bliard; N. Blömer; D. Borovyk; C. Bunnenberg; E.A. Bygate; L. Cash; N. Chatterjee; T.-W. Chen; A. Chiti; S.S.-W. Chung; H. Chuquillanqui; A. Ciezarek; A. Clarkson; E. Codling; A. Corradini; A. Cowans; S. Dartnell; A.J.S. Davis; L.L.M. De Benedictis; G.G. Deme; C. Devenish; S. Dimri; C. Dittrich; K.R. Dorheim; H.B. Drage; M.-A. Dueñas; A. Efstathiou; L.C. Evans; M.E. Ferreira Santos; A.J. Foxx; R.J. Gardiner; J. Gaudard; W. Gearty; L. Graham; V.M. Graves; H.M. Green; R.V. Greensmith; S. Gérard; A.H. Halbritter; T.R. Hartke; R.M. Hechler; B.J. Hindle; P.-Y. Hsing; S. Illanas; G. Iossa; E.E. Jackson; L.A. Jones; F.A.M. Jones; J.A. Jones; J.F. Jupke; N.N. Kaunain; R. Kennedy; M.R. Kerr; N.J. Kester;  M.  Klaassen;  O.  Konecka;  R.  Krasnow;  R.  Kukowski;  A.  Kumar;  R.  Kuminski;  K.S. Kuzey; L. Laccetti; M. Lagisz; H. Latifi; N. Lecomte; K.D. Luchmun; A. Lévêque; A. Markitantova; B.M. Marshall; E. Menares-Barraza; D. Mertens; G. Mesbahi; J. Meyer; J. Millard; L.M. Montilla; B. Moreira; A. Morera; G. Murali; M.P. Murray; F. Märker; K. Nagahawatte; C.L. Narraway; H.I. Niven; A.G. Nytko; B. Ohse; S. Patterson; H.R.P. Phillips; R. Pienaar; P. Pollo; A. Ponce; L.M.V. Porto; E.F.R. Preston; C.S. Prieul; A. Prylutska; O. Prylutskyi; K. Radman-Daw; A.M. Raharison; R. Rao; F.R. Read; S. Record; W. Rees; R. Reeve; H. Rhodes; C. Rocabado; A. Rouviere; A. Rönnfeldt; A. Sagouis; S.P. Sakhalkar; G.S. Santos; M.A. Shakur; R. Shaw; D. Siegieda; L. Šmídova; B.I. Simmons; H.G. Sisley; A. Sánchez-Tójar; F.G. Taboada; N.G. Taylor; H. Teague; K. Thrikkadeeri; V. Thuroczy; A. Varah; K.L. Vinay; C.M. Watrobska; Z.B. Williams; S.M. Windecker"),
-                img(src="bes-logo.svg", align = "left", class = "img-invert",
-                    style="max-width: 350px;"),
+                p("A number of individuals contributed to the hackathon and the development of the report. A full list of these contributors is included below:"),
+                p("N. Cooper (corresponding author); B.J. Allen; N. Almaani; R. Altwegg; J. Balogh; H. Balti; R.A. Barber; M.E. Barbosa de Sousa; J.G.N.  Barreat; C.F. Barrett; R. Bates; A.M.J.M. Beale; L. Bliard; N. Blömer; D. Borovyk; C. Bunnenberg; E.A. Bygate; L. Cash; N. Chatterjee; T.-W. Chen; A. Chiti; S.S.-W. Chung; H. Chuquillanqui; A. Ciezarek; A. Clarkson; E. Codling; A. Corradini; A. Cowans; S. Dartnell; A.J.S. Davis; L.L.M. De Benedictis; G.G. Deme; C. Devenish; S. Dimri; C. Dittrich; K.R. Dorheim; H.B. Drage; M.-A. Dueñas; A. Efstathiou; L.C. Evans; M.E. Ferreira Santos; A.J. Foxx; R.J. Gardiner; J. Gaudard; W. Gearty; L. Graham; V.M. Graves; H.M. Green; R.V. Greensmith; S. Gérard; A.H. Halbritter; T.R. Hartke; R.M. Hechler; B.J. Hindle; P.-Y. Hsing; S. Illanas; G. Iossa; E.E. Jackson; L.A. Jones; F.A.M. Jones; J.A. Jones; J.F. Jupke; N.N. Kaunain; R. Kennedy; M.R. Kerr; N.J. Kester;  M.  Klaassen;  O.  Konecka;  R.  Krasnow;  R.  Kukowski;  A.  Kumar;  R.  Kuminski;  K.S. Kuzey; L. Laccetti; M. Lagisz; H. Latifi; N. Lecomte; K.D. Luchmun; A. Lévêque; A. Markitantova; B.M. Marshall; E. Menares-Barraza; D. Mertens; G. Mesbahi; J. Meyer; J. Millard; L.M. Montilla; B. Moreira; A. Morera; G. Murali; M.P. Murray; F. Märker; K. Nagahawatte; C.L. Narraway; H.I. Niven; A.G. Nytko; B. Ohse; S. Patterson; H.R.P. Phillips; R. Pienaar; P. Pollo; A. Ponce; L.M.V. Porto; E.F.R. Preston; C.S. Prieul; A. Prylutska; O. Prylutskyi; K. Radman-Daw; A.M. Raharison; R. Rao; F.R. Read; S. Record; W. Rees; R. Reeve; H. Rhodes; C. Rocabado; A. Rouviere; A. Rönnfeldt; A. Sagouis; S.P. Sakhalkar; G.S. Santos; M.A. Shakur; R. Shaw; D. Siegieda; L. Šmídova; B.I. Simmons; H.G. Sisley; A. Sánchez-Tójar; F.G. Taboada; N.G. Taylor; H. Teague; K. Thrikkadeeri; V. Thuroczy; A. Varah; K.L. Vinay; C.M. Watrobska; Z.B. Williams; S.M. Windecker.")
       ),
       nav_panel("Plot", 
                 layout_sidebar(
@@ -213,6 +254,18 @@ ui <- function(request) {
       nav_spacer(),
       nav_item(
         input_dark_mode(mode = "light")
+      )
+    ),
+    tags$footer(
+      class = "footer mt-auto py-3 bg-light",
+      tags$div(
+        class = "site-footer",
+        tags$span("N. Cooper; B.J. Allen; N. Almaani; R. Altwegg; J. Balogh; H. Balti; R.A. Barber; M.E. Barbosa de Sousa; J.G.N. Barreat; C.F. Barrett; R. Bates; A.M.J.M. Beale; L. Bliard; N. Blömer; D. Borovyk; C. Bunnenberg; E.A. Bygate; L. Cash; N. Chatterjee; T.-W. Chen; A. Chiti; S.S.-W. Chung; H. Chuquillanqui; A. Ciezarek; A. Clarkson; E. Codling; A. Corradini; A. Cowans; S. Dartnell; A.J.S. Davis; L.L.M. De Benedictis; G.G. Deme; C. Devenish; S. Dimri; C. Dittrich; K.R. Dorheim; H.B. Drage; M.-A. Dueñas; A. Efstathiou; L.C. Evans; M.E. Ferreira Santos; A.J. Foxx; R.J. Gardiner; J. Gaudard; W. Gearty; L. Graham; V.M. Graves; H.M. Green; R.V. Greensmith; S. Gérard; A.H. Halbritter; T.R. Hartke; R.M. Hechler; B.J. Hindle; P.-Y. Hsing; S. Illanas; G. Iossa; E.E. Jackson; L.A. Jones; F.A.M. Jones; J.A. Jones; J.F. Jupke; N.N. Kaunain; R. Kennedy; M.R. Kerr; N.J. Kester; M. Klaassen; O. Konecka; R. Krasnow; R. Kukowski; A. Kumar; R. Kuminski; K.S. Kuzey; L. Laccetti; M. Lagisz; H. Latifi; N. Lecomte; K.D. Luchmun; A. Lévêque; A. Markitantova; B.M. Marshall; E. Menares-Barraza; D. Mertens; G. Mesbahi; J. Meyer; J. Millard; L.M. Montilla; B. Moreira; A. Morera; G. Murali; M.P. Murray; F. Märker; K. Nagahawatte; C.L. Narraway; H.I. Niven; A.G. Nytko; B. Ohse; S. Patterson; H.R.P. Phillips; R. Pienaar; P. Pollo; A. Ponce; L.M.V. Porto; E.F.R. Preston; C.S. Prieul; A. Prylutska; O. Prylutskyi; K. Radman-Daw; A.M. Raharison; R. Rao; F.R. Read; S. Record; W. Rees; R. Reeve; H. Rhodes; C. Rocabado; A. Rouviere; A. Rönnfeldt; A. Sagouis; S.P. Sakhalkar; G.S. Santos; M.A. Shakur; R. Shaw; D. Siegieda; L. Šmídova; B.I. Simmons; H.G. Sisley; A. Sánchez-Tójar; F.G. Taboada; N.G. Taylor; H. Teague; K. Thrikkadeeri; V. Thuroczy; A. Varah; K.L. Vinay; C.M. Watrobska; Z.B. Williams; S.M. Windecker. (2026). Data-and code-archiving in the British Ecological Society journals: present status and recommendations for future improvements."),
+        tags$em("EcoEvoRxiv."),
+        tags$a("https://doi.org/10.32942/X26W9V", href = "https://doi.org/10.32942/X26W9V"),
+        tags$br(),
+        tags$br(),
+        tags$span("Shiny App created by Lewis A. Jones, William Gearty, and Bethany J. Allen")
       )
     )
   )
