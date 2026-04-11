@@ -41,8 +41,10 @@ ui <- function(request) {
           var topOffset = $scrollBody.offset().top;
           var $info = $wrapper.find('.dataTables_info');
           var bottomChrome = $info.length ? $info.outerHeight(true) : 0;
+          var $footer = $('.site-footer');
+          var footerHeight = $footer.length ? $footer.outerHeight(true) : 0;
           var padding = 10;
-          var newHeight = wh - topOffset - bottomChrome - padding;
+          var newHeight = wh - topOffset - bottomChrome - footerHeight - padding;
           $scrollBody.css('max-height', newHeight + 'px');
           if (settings.oScroller) {
             settings.oScroller.dom.scroller.style.height = newHeight + 'px';
@@ -70,10 +72,6 @@ ui <- function(request) {
       tags$style(HTML("
         [data-bs-theme='dark'] .img-invert {
           filter: invert(1);
-        }
-        #table .dataTables_scrollBody {
-          height: calc(75vh - 200px) !important;
-          max-height: calc(75vh - 200px) !important;
         }
         .shiny-plot-output {
           margin-bottom: 60px;
