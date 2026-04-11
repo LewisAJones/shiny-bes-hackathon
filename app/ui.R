@@ -85,6 +85,28 @@ ui <- function(request) {
           padding: 15px;
           z-index: 1000;
         }
+        .shiny-plot-output {
+          position: relative;
+        }
+        .shiny-plot-output.recalculating::after {
+          content: '';
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          width: 40px;
+          height: 40px;
+          margin: -20px 0 0 -20px;
+          border: 4px solid #ccc;
+          border-top-color: #333;
+          border-radius: 50%;
+          animation: spin 0.8s linear infinite;
+        }
+        .shiny-plot-output.recalculating {
+          opacity: 0.5;
+        }
+        @keyframes spin {
+          to { transform: rotate(360deg); }
+        }
       ")),
     ),
     page_navbar(id = "tabs",
