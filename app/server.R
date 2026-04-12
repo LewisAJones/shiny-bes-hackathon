@@ -78,9 +78,9 @@ server <- function(input, output, session) {
     
     if (input$geom != '.') p <- p + get(input$geom)()
     
-    facets <- paste(input$facet_row, '~', input$facet_col)
+    facets <- paste0("`", input$facet_row, "`", '~', "`", input$facet_col, "`")
     
-    if (facets != '. ~ .') p <- p + facet_grid(facets)
+    if (facets != '.~.') p <- p + facet_grid(facets)
     
     if (input$jitter) p <- p + geom_jitter()
     if (input$smooth) p <- p + geom_smooth()
