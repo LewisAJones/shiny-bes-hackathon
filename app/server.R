@@ -44,7 +44,8 @@ server <- function(input, output, session) {
            y = y_label,
            colour = if (input$colour != '.') str_to_title(input$colour) else NULL,
            fill = if (input$fill != '.') str_to_title(input$fill) else NULL) +
-      theme_bw(paper = "#f8f3ef", ink = "#212121", base_size = 20)
+      theme_bw(paper = "#f8f3ef", ink = "#212121", base_size = 20) +
+      theme(legend.position = "bottom")
     
     journal_colours <- c(
       "Ecological Solutions and Evidence" = "#A2DACC", 
@@ -58,18 +59,18 @@ server <- function(input, output, session) {
     if (input$colour == "journal") {
       p <- p + scale_colour_manual(values = journal_colours)
     } else {
-      p <- p + scale_colour_viridis_d(na.value = "grey50")
+      p <- p + scale_colour_viridis_d(end = 0.8, na.value = "grey50")
     }
     
     if (input$fill == "journal") {
       p <- p + scale_fill_manual(values = journal_colours)
     } else {
-      p <- p + scale_fill_viridis_d(na.value = "grey50")
+      p <- p + scale_fill_viridis_d(end = 0.8, na.value = "grey50")
     }
     
-    if (input$x != '.') p <- p + aes(x = .data[[input$x]])
+    if (input$x != '.') p <- p + aes(x = str_wrap(.data[[input$x]], width = 10))
     
-    if (input$y != '.') p <- p + aes(y = .data[[input$y]])
+    if (input$y != '.') p <- p + aes(y = str_wrap(.data[[input$y]], width = 10))
     
     if (input$colour != '.') p <- p + aes(colour = .data[[input$colour]])
     

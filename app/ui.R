@@ -160,8 +160,12 @@ ui <- function(request) {
       theme = my_theme,
       title = tagList(
         img(src = "bes-E.png", height = "30px", class = "me-2 img-invert",
-            style = "vertical-align: middle;"),
-        span("Data & Code Archiving", style = "vertical-align: middle;")
+            style = "vertical-align: middle;",
+            onclick = "Shiny.setInputValue('tabs', 'About'); return false;"),
+        tags$a("Data & Code Archiving",
+               style = "vertical-align: middle; color: black; text-decoration: none;",
+               href = "#",
+               onclick = "Shiny.setInputValue('tabs', 'About'); return false;")
       ),
       fillable_mobile = TRUE,
       nav_panel("About",
@@ -226,7 +230,7 @@ ui <- function(request) {
                       inputId = 'x', 
                       label = 'X-axis variable', 
                       choices = c(None='.', colnames(dat_plot)),
-                      selected = "code availability"
+                      selected = "journal"
                     ), 
                     selectInput(
                       inputId = 'y', 
@@ -259,12 +263,12 @@ ui <- function(request) {
                           inputId = 'fill', 
                           label = 'Fill by', 
                           choices = c(None='.', colnames(dat_plot)),
-                          selected = "journal"
+                          selected = "code availability"
                         ),
                         hidden(checkboxInput(
                           inputId = "exclude_na_fill",
                           label = "Exclude NA from fill",
-                          value = FALSE
+                          value = TRUE
                         )),
                       ),
                       accordion_panel(
