@@ -209,7 +209,8 @@ ui <- function(request) {
                                              onclick = "Shiny.setInputValue('tabs', 'Plot'); return false;"))
                       ),
                     img(src = "bes-logo.svg", class = "img-invert",
-                        style="max-width: 100%; height: auto; padding-left: 20%; padding-right: 20%")
+                        style="max-width: 100%; height: auto; padding-left: 20%; padding-right: 20%",
+                        onclick = "window.open('https://www.britishecologicalsociety.org', '_blank')")
                   )
                 ),
       ),
