@@ -2,7 +2,7 @@
 
 ## Overview
 
-On the 29^th^ and 30^th^ of September 2025, the [British Ecological Society](https://www.britishecologicalsociety.org) (BES) organised a hackathon, with the goal of collecting data on the availability of data and code for papers published in their respective journals (*Ecological Solutions and Evidence*, *Functional Ecology*, *Journal of Animal Ecology*, *Journal of Applied Ecology*, *Journal of Ecology*, *Methods in Ecology and Evolution*, and *People and Nature*). The hackathon included in-person participation at BES Headquarters and Natural History Museum, London, and remote participation via a Discord server.
+On the 29th and 30th of September 2025, the [British Ecological Society](https://www.britishecologicalsociety.org) (BES) organised a hackathon, with the goal of collecting data on the availability of data and code for papers published in their respective journals (*Ecological Solutions and Evidence*, *Functional Ecology*, *Journal of Animal Ecology*, *Journal of Applied Ecology*, *Journal of Ecology*, *Methods in Ecology and Evolution*, and *People and Nature*). The hackathon included in-person participation at BES Headquarters and Natural History Museum, London, and remote participation via a Discord server.
 
 This repository contains the source code for the Shiny app ([https://www.lewisajones.com/shiny-bes-hackathon/](https://www.lewisajones.com/shiny-bes-hackathon/)) accompaniment to the manuscript reporting the findings of the hackathon:
 
