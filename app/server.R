@@ -4,6 +4,18 @@ server <- function(input, output, session) {
   # Data ------------------------------------------------------------------
   dat_plot_filt <- reactive({
     tmp <- dat_plot
+    # split values if requested
+    if (input$x_split_vals) {
+      split_vals <- strsplit(tmp[[input$x]], ";")
+      tmp <- tmp[rep(seq_len(nrow(tmp)), lengths(split_vals)), ]
+      tmp[[input$x]] <- unlist(split_vals)
+    }
+    if (input$y_split_vals) {
+      split_vals <- strsplit(tmp[[input$y]], ";")
+      tmp <- tmp[rep(seq_len(nrow(tmp)), lengths(split_vals)), ]
+      tmp[[input$y]] <- unlist(split_vals)
+    }
+    
     # Apply dynamic filters
     for (id in filter_ids()) {
       col <- input[[paste0(id, "_col")]]
@@ -303,12 +315,29 @@ server <- function(input, output, session) {
     }
   })
   
+  # Hide y-axis variable when selecting geom_bar
   observe({
     if (input$geom != 'geom_bar') {
       show("y")
     } else {
       hide("y")
       updateSelectInput(session, "y", selected = ".")
+    }
+  })
+  
+  # show split values options if selected variable was a multiselect
+  observe({
+    if (input$x %in% multi_select) {
+      show("x_split_vals")
+    } else {
+      hide("x_split_vals")
+      updateCheckboxInput(session, "x_split_vals", value = FALSE)
+    }
+    if (input$y %in% multi_select) {
+      show("y_split_vals")
+    } else {
+      hide("y_split_vals")
+      updateCheckboxInput(session, "y_split_vals", value = FALSE)
     }
   })
   

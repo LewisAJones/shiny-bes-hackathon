@@ -48,3 +48,5 @@ colnames(dat) <- tolower(gsub(pattern = "_", replacement = " ", x = colnames(dat
 dat$doi <- paste0('<a href=\"https://doi.org/', dat$doi,'" target="_blank">', dat$doi ,"</a>")
 
 dat_plot <- subset(dat, select = -c(doi))
+
+multi_select <- names(Filter(isTRUE, lapply(dat_plot, \(x) any(grepl(";", x)))))

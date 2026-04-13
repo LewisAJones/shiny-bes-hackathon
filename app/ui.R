@@ -221,7 +221,7 @@ ui <- function(request) {
                       inputId = 'geom', 
                       label = 'Plot type', 
                       choices = c(None = '.', 
-                                  Bar = "geom_bar", 
+                                  Bar = "geom_bar",
                                   Boxplot = "geom_boxplot",
                                   Violin = "geom_violin",
                                   Point = "geom_point"),
@@ -232,12 +232,22 @@ ui <- function(request) {
                       label = 'X-axis variable', 
                       choices = c(None='.', colnames(dat_plot)),
                       selected = "journal"
-                    ), 
+                    ),
+                    hidden(checkboxInput(
+                      inputId = "x_split_vals",
+                      label = "Split semi-colon-separated values for x variable",
+                      value = FALSE
+                    )),
                     selectInput(
                       inputId = 'y', 
                       label = 'Y-axis variable', 
                       choices = c(None='.', colnames(dat_plot))
                     ),
+                    hidden(checkboxInput(
+                      inputId = "y_split_vals",
+                      label = "Split semi-colon-separated values for y variable",
+                      value = FALSE
+                    )),
                     accordion(
                       id = "plot_accordion",
                       open = FALSE,
