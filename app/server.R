@@ -80,15 +80,23 @@ server <- function(input, output, session) {
       p <- p + scale_fill_viridis_d(end = 0.8, na.value = "grey50")
     }
     
-    if (input$x != '.') p <- p + aes(x = str_wrap(.data[[input$x]], width = 10))
+    if (input$x != '.') p <- p + 
+      aes(x = if (is.numeric(.data[[input$x]])) .data[[input$x]] else str_wrap(.data[[input$x]], width = 10))
     
-    if (input$y != '.') p <- p + aes(y = str_wrap(.data[[input$y]], width = 10))
+    if (input$y != '.') p <- p + 
+      aes(y = if (is.numeric(.data[[input$y]])) .data[[input$y]] else str_wrap(.data[[input$y]], width = 10))
     
     if (input$colour != '.') p <- p + aes(colour = .data[[input$colour]])
     
     if (input$fill != '.') p <- p + aes(fill = .data[[input$fill]])
     
     if (input$geom != '.') p <- p + get(input$geom)()
+    
+    # Handle x-axis labels
+    if (input$x %in% c("country first")) {
+      p <- p + aes(x = str_wrap(.data[[input$x]], width = 70))
+      p <- p + theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5))
+    }
     
     facets <- paste0("`", input$facet_row, "`", '~', "`", input$facet_col, "`")
     
