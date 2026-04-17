@@ -240,6 +240,11 @@ ui <- function(request) {
                                   point = "geom_point"),
                       selected = "geom_bar"
                     ),
+                    checkboxInput(
+                      inputId = 'jitter', 
+                      label = 'Jitter', 
+                      value = FALSE
+                    ),
                     selectInput(
                       inputId = 'x', 
                       label = 'X-axis variable', 
@@ -347,11 +352,6 @@ ui <- function(request) {
                         actionButton("add_exclude", "Add exclusion", 
                                      icon = icon("plus"))
                       ),
-                    ),
-                    checkboxInput(
-                      inputId = 'jitter', 
-                      label = 'Jitter', 
-                      value = FALSE
                     ),
                     actionButton(
                       "reset_plot",

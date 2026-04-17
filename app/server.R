@@ -357,6 +357,11 @@ server <- function(input, output, session) {
     }
   })
   
+  # jitter only available for geom_point
+  observe({
+    toggle("jitter", condition = input$geom == 'geom_point')
+  })
+  
   # show split values options if selected variable was a multiselect
   observe({
     if (input$x %in% multi_select) {
