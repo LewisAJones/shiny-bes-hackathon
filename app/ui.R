@@ -92,7 +92,10 @@ ui <- function(request) {
           position: fixed;
           width: 100%;
           bottom: 0;
-          padding: 15px;
+          padding-top: 10px;
+          padding-bottom: 10px;
+          padding-left: 40px;
+          padding-right: 40px;
           z-index: 1000;
         }
         .shiny-plot-output {
@@ -123,6 +126,11 @@ ui <- function(request) {
           align-items: flex-start;
         }
         .about-text {
+          padding-top: 10px;
+          padding-bottom: 10px;
+          padding-left: 25px;
+          padding-right: 25px;
+          line-height: 1.7em;
           flex: 1.2;
           min-width: 0;
         }
@@ -131,6 +139,10 @@ ui <- function(request) {
           min-width: 0;
         }
         .about-sidebar img {
+          padding-top: 10px;
+          padding-bottom: 10px;
+          padding-left: 25px;
+          padding-right: 25px;
           max-width: 100%;
           height: auto;
         }
@@ -220,11 +232,10 @@ ui <- function(request) {
                     selectInput(
                       inputId = 'geom', 
                       label = 'Plot type', 
-                      choices = c(None = '.', 
-                                  Bar = "geom_bar",
-                                  Boxplot = "geom_boxplot",
-                                  Violin = "geom_violin",
-                                  Point = "geom_point"),
+                      choices = c(bar = "geom_bar",
+                                  boxplot = "geom_boxplot",
+                                  violin = "geom_violin",
+                                  point = "geom_point"),
                       selected = "geom_bar"
                     ),
                     selectInput(
@@ -338,11 +349,6 @@ ui <- function(request) {
                     checkboxInput(
                       inputId = 'jitter', 
                       label = 'Jitter', 
-                      value = FALSE
-                    ),
-                    checkboxInput(
-                      inputId = 'smooth', 
-                      label = 'Smooth', 
                       value = FALSE
                     ),
                     actionButton("._bookmark_", label = "Bookmark...",

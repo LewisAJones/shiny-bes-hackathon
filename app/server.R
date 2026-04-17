@@ -90,10 +90,10 @@ server <- function(input, output, session) {
     
     if (input$fill != '.') p <- p + aes(fill = .data[[input$fill]])
     
-    if (input$geom != '.') p <- p + get(input$geom)()
+    p <- p + get(input$geom)()
     
     # Handle x-axis labels
-    if (input$x %in% c("country first")) {
+    if (input$x %in% c("country first", "data format")) {
       p <- p + aes(x = str_wrap(.data[[input$x]], width = 70))
       p <- p + theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5))
     }
@@ -103,7 +103,6 @@ server <- function(input, output, session) {
     if (facets != '.~.') p <- p + facet_grid(facets)
     
     if (input$jitter) p <- p + geom_jitter()
-    if (input$smooth) p <- p + geom_smooth()
     
     # Valid ggplot build?
     error_msg <- tryCatch({

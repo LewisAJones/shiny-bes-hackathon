@@ -35,6 +35,9 @@ library(stringr)
 # saveRDS(object = dat, file = "app/data/dat.RDS")
 # Read data
 dat <- readRDS("data/dat.RDS")
+names <- 1:ncol(dat)
+dat[, names] <- lapply(dat[, names], factor)
+
 # Drop and relocate columns
 dat <- dat[, c("doi", "journal", "article_type", "year_published", "country_first",
                "data_used", "data_availability", "data_link", "data_archive",
