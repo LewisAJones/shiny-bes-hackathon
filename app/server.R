@@ -143,6 +143,28 @@ server <- function(input, output, session) {
   )
   
   # Handlers -----------------------------------------------------
+  ## Reset button ------------------------------------------------
+  observeEvent(input$reset_plot, {
+    # Reset all inputs to their default values
+    updateSelectInput(session, "geom", selected = "geom_bar")
+    updateSelectInput(session, "x", selected = "journal")
+    updateSelectInput(session, "y", selected = ".")
+    updateSelectInput(session, "colour", selected = ".")
+    updateCheckboxInput(session, "exclude_na_colour", value = FALSE)
+    updateSelectInput(session, "fill", selected = "code availability")
+    updateCheckboxInput(session, "exclude_na_fill", value = TRUE)
+    updateSelectInput(session, "facet_row", selected = ".")
+    updateSelectInput(session, "facet_col", selected = ".")
+    updateCheckboxInput(session, "jitter", value = FALSE)
+    # Remove all dynamic filters and exclusions
+    lapply(filter_ids(), function(id) removeUI(selector = paste0("#", id)))
+    filter_ids(character(0))
+    filter_counter(0)
+    lapply(exclude_ids(), function(id) removeUI(selector = paste0("#", id)))
+    exclude_ids(character(0))
+    exclude_counter(0)
+  })
+    
   ## Bookmark button --------------------------------------
   observeEvent(input$bookmark, {
     # modified from the shiny package

@@ -354,6 +354,18 @@ ui <- function(request) {
                       value = FALSE
                     ),
                     actionButton(
+                      "reset_plot",
+                      label = span(
+                        "Reset to Defaults ",
+                        tooltip(
+                          icon("info-circle"),
+                          paste("Reset all of the plot options to their",
+                                "default values.")
+                        )
+                      ),
+                      icon = shiny::icon("refresh", lib = "glyphicon")
+                    ),
+                    actionButton(
                       "bookmark",
                       label = span(
                         "Bookmark ",
