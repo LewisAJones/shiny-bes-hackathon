@@ -359,6 +359,9 @@ server <- function(input, output, session) {
   
   # jitter only available for geom_point
   observe({
+    if (input$geom != "geom_point") {
+      updateCheckboxInput(session, "jitter", value = FALSE)
+    }
     toggle("jitter", condition = input$geom == 'geom_point')
   })
   
