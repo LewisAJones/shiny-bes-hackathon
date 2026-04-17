@@ -92,10 +92,7 @@ ui <- function(request) {
           position: fixed;
           width: 100%;
           bottom: 0;
-          padding-top: 10px;
-          padding-bottom: 10px;
-          padding-left: 40px;
-          padding-right: 40px;
+          padding: 10px;
           z-index: 1000;
         }
         .shiny-plot-output {
