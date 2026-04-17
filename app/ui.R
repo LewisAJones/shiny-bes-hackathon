@@ -92,7 +92,10 @@ ui <- function(request) {
           position: fixed;
           width: 100%;
           bottom: 0;
-          padding: 10px;
+          padding-top: 10px;
+          padding-bottom: 10px;
+          padding-left: 65px;
+          padding-right: 65px;
           z-index: 1000;
         }
         .shiny-plot-output {
@@ -119,14 +122,14 @@ ui <- function(request) {
         }
         .about-layout {
           display: flex;
-          gap: 16px;
+          gap: 50px;
+          padding-top: 10px;
+          padding-bottom: 10px;
+          padding-left: 50px;
+          padding-right: 50px;
           align-items: flex-start;
         }
         .about-text {
-          padding-top: 10px;
-          padding-bottom: 10px;
-          padding-left: 25px;
-          padding-right: 25px;
           line-height: 1.7em;
           flex: 1.2;
           min-width: 0;
@@ -136,12 +139,14 @@ ui <- function(request) {
           min-width: 0;
         }
         .about-sidebar img {
-          padding-top: 10px;
-          padding-bottom: 10px;
-          padding-left: 25px;
-          padding-right: 25px;
           max-width: 100%;
           height: auto;
+        }
+        .table-layout {
+          padding-top: 10px;
+          padding-bottom: 10px;
+          padding-left: 50px;
+          padding-right: 50px;
         }
         @media (max-width: 768px) {
           .about-layout {
@@ -356,7 +361,10 @@ ui <- function(request) {
                 )
                 ),
       nav_panel("Table",
-                dataTableOutput("table")
+                tags$div(
+                  class = "table-layout",
+                  dataTableOutput("table")
+                  )
                 ),
       nav_spacer(),
       nav_item(
