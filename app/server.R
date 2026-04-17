@@ -344,18 +344,16 @@ server <- function(input, output, session) {
     }
   })
   
-  # Hide y-axis variable when selecting geom_bar
+  # y-axis choices depend on geom type
   observe({
-    if (input$geom == 'geom_bar') {
-      updateSelectInput(session, "y", selected = ".",
-                        choices = c(None='.', colnames(dat_plot)))
-      hide("y")
-    } else if (input$geom %in% c('geom_boxplot', 'geom_violin')) {
-      show("y")
+    if (input$geom %in% c('geom_boxplot', 'geom_violin')) {
       updateSelectInput(session, "y", selected = "year published",
                         choices = "year published")
-    } else {
       show("y")
+    } else {
+      updateSelectInput(session, "y", selected = ".",
+                        choices = c(None='.', colnames(dat_plot)))
+      toggle("y", condition = input$geom != 'geom_bar')
     }
   })
   
