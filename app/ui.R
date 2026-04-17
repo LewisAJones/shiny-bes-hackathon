@@ -353,9 +353,18 @@ ui <- function(request) {
                       label = 'Jitter', 
                       value = FALSE
                     ),
-                    actionButton("._bookmark_", label = "Bookmark...",
-                                 icon = shiny::icon("link", lib = "glyphicon"),
-                                 title = "Bookmark this application's state and get a URL for sharing.")
+                    actionButton(
+                      "bookmark",
+                      label = span(
+                        "Bookmark ",
+                        tooltip(
+                          icon("info-circle"),
+                          paste("Bookmark this application's state",
+                                "and get a URL for sharing.")
+                        )
+                      ),
+                      icon = shiny::icon("link", lib = "glyphicon")
+                    )
                   ),
                   plotOutput("plot")
                 )

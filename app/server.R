@@ -144,10 +144,10 @@ server <- function(input, output, session) {
   
   # Handlers -----------------------------------------------------
   ## Bookmark button --------------------------------------
-  observeEvent(input$._bookmark_, {
+  observeEvent(input$bookmark, {
     # modified from the shiny package
-    exclude <- c("._bookmark_", "url_search", "url_origin", "url_hash",
-                 "table_state", "table_search_columns",
+    exclude <- c("bookmark", "url_search", "url_origin", "url_hash",
+                 "reset_plot", "table_state", "table_search_columns",
                  "add_filter", "add_exclude", "plot_accordion")
     input_vals <- shiny:::serializeReactiveValues(input, exclude = exclude)
     # remove DT- and filter-associated inputs
