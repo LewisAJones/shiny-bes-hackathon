@@ -29,7 +29,9 @@ server <- function(input, output, session) {
       col <- input[[paste0(id, "_col")]]
       vals <- input[[paste0(id, "_vals")]]
       if (!is.null(col) && col != "" && !is.null(vals)) {
-        tmp <- tmp[!(tmp[[col]] %in% vals), ]
+        exclude_na <- "NA" %in% vals
+        real_vals <- setdiff(vals, "NA")
+        tmp <- tmp[!(tmp[[col]] %in% real_vals | (exclude_na & is.na(tmp[[col]]))), ]
       }
     }
     # Apply NA exclusions
@@ -495,6 +497,8 @@ server <- function(input, output, session) {
       req(col, col != "")
       vals <- sort(unique(dat[[col]]))
       vals <- vals[!is.na(vals)]
+      has_na <- anyNA(dat[[col]])
+      if (has_na) vals <- c(vals, "NA")
       
       # Check for pending restore values
       pe <- pending_excludes()
