@@ -9,5 +9,5 @@ template_params <- list(
                            '    <link rel="manifest" href="/shiny-bes-hackathon/site.webmanifest" />\n')
 )
 
-shinylive::export("app", "site", assets_version = "0.10.6",
+shinylive::export("app", "site", assets_version = "0.10.8",
                   template_params = template_params)
