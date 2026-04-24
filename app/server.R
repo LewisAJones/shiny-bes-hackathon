@@ -49,15 +49,15 @@ server <- function(input, output, session) {
     y_label <- if (input$geom == 'geom_bar') {
       "Count"
     } else if (input$y != '.') {
-      str_to_title(input$y)
+      tools::toTitleCase(input$y)
     } else {
       NULL
     }
     p <- ggplot(data = dat_plot_filt()) +
-      labs(x = if (input$x != '.') str_to_title(input$x) else NULL,
+      labs(x = if (input$x != '.') tools::toTitleCase(input$x) else NULL,
            y = y_label,
-           colour = if (input$colour != '.') str_to_title(input$colour) else NULL,
-           fill = if (input$fill != '.') str_to_title(input$fill) else NULL) +
+           colour = if (input$colour != '.') tools::toTitleCase(input$colour) else NULL,
+           fill = if (input$fill != '.') tools::toTitleCase(input$fill) else NULL) +
       theme_bw(paper = "#f8f3ef", ink = "#212121", base_size = 20) +
       theme(legend.position = "bottom")
     
@@ -83,10 +83,10 @@ server <- function(input, output, session) {
     }
     
     if (input$x != '.') p <- p + 
-      aes(x = if (is.numeric(.data[[input$x]])) .data[[input$x]] else str_wrap(.data[[input$x]], width = 10))
+      aes(x = if (is.numeric(.data[[input$x]])) .data[[input$x]] else wrap_text(.data[[input$x]], width = 10))
     
     if (input$y != '.') p <- p + 
-      aes(y = if (is.numeric(.data[[input$y]])) .data[[input$y]] else str_wrap(.data[[input$y]], width = 10))
+      aes(y = if (is.numeric(.data[[input$y]])) .data[[input$y]] else wrap_text(.data[[input$y]], width = 10))
     
     if (input$colour != '.') p <- p + aes(colour = .data[[input$colour]])
     
@@ -96,7 +96,7 @@ server <- function(input, output, session) {
     
     # Handle x-axis labels
     if (input$x %in% c("country first", "data format")) {
-      p <- p + aes(x = str_wrap(.data[[input$x]], width = 70))
+      p <- p + aes(x = wrap_text(.data[[input$x]], width = 70))
       p <- p + theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5))
     }
     

@@ -27,7 +27,12 @@ library(DT)
 library(munsell)
 # General plotting
 library(ggplot2)
-library(stringr)
+
+# Base R alternative to stringr::str_wrap
+wrap_text <- function(x, width = 10) {
+  vapply(x, function(s) paste(strwrap(s, width = width), collapse = "\n"),
+         character(1), USE.NAMES = FALSE)
+}
 
 # Data ------------------------------------------------------------------
 # Download required data
