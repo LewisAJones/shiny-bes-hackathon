@@ -62,6 +62,11 @@ jobs:
         run: |
           source("build_app.R")
 
+      - name: Fix vctrs/rlang compatibility
+        shell: Rscript {0}
+        run: |
+          source("fix_vctrs.R")
+
       - name: Copy favicons
         run: cp -r app/www/favicon/* site/
 
