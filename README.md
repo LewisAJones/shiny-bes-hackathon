@@ -6,7 +6,7 @@ On the 29th and 30th of September 2025, the [British Ecological Society](https:/
 
 This repository contains the source code for the Shiny app ([https://www.lewisajones.com/shiny-bes-hackathon/](https://www.lewisajones.com/shiny-bes-hackathon/)) accompaniment to the manuscript reporting the findings of the hackathon:
 
-> Cooper et al. (2026). Data-and code-archiving in the British Ecological Society journals: present status and recommendations for future improvements. EcoEvoRxiv. [https://doi.org/10.32942/X26W9V](https://doi.org/10.32942/X26W9V).
+> Cooper et al. (2026). Data-and code-archiving in the British Ecological Society journals: present status and recommendations for future improvements. *Methods in Ecology and Evolution*. [https://doi.org/10.1111/2041-210x.70338](https://doi.org/10.1111/2041-210x.70338).
 
 The purpose of this Shiny app is to support the exploration and visualisation of data generated during the BES hackathon focused on understanding whether data (and code) from published papers in BES journals are:
 
