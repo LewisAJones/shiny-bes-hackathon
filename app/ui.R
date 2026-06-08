@@ -176,10 +176,10 @@ ui <- function(request) {
                     class = "about-text",
                     h3("Data- and code-archiving in the British Ecological Society journals: present status and recommendations for future improvements"),
                     p("On the 29th and 30th of September 2025, the British Ecological Society (BES) organised a hackathon, with the goal of collecting data on the availability of data and code for papers published in their respective journals (Ecological Solutions and Evidence, Functional Ecology, Journal of Animal Ecology, Journal of Applied Ecology, Journal of Ecology, Methods in Ecology and Evolution, and People and Nature). The hackathon included in-person participation at BES Headquarters and Natural History Museum, London, and remote participation via a Discord server."),
-                    p("This Shiny Application is a companion to the manuscript reporting the findings of the hackathon (Cooper et al., 2025), enabling users to explore the data collected during the hackathon. The raw data can be visualised through the 'Plot' tab, and individual records inspected through the 'Table' tab. If preferred, the raw data can also be downloaded via the button below."),
+                    p("This Shiny Application is a companion to the manuscript reporting the findings of the hackathon (Cooper et al., 2026), enabling users to explore the data collected during the hackathon. The raw data can be visualised through the 'Plot' tab, and individual records inspected through the 'Table' tab. If preferred, the raw data can also be downloaded via the button below."),
                     tags$a(
                       "READ THE REPORT",
-                      href = "https://doi.org/10.32942/X26W9V",
+                      href = "https://doi.org/10.1111/2041-210x.70338",
                       target = "_blank",
                       class = "btn btn-default",
                       style = "font-weight: bold; border-color: black;",
@@ -187,7 +187,7 @@ ui <- function(request) {
                     ),
                     tags$a(
                       "DOWNLOAD THE DATA",
-                      href = "https://anonymous.4open.science/r/reproduce-reuse-recycle-71FD",
+                      href = "https://doi.org/10.5281/zenodo.19737911",
                       target = "_blank",
                       class = "btn btn-default",
                       style = "font-weight: bold; border-color: black;",
@@ -383,8 +383,8 @@ ui <- function(request) {
       class = "site-footer mt-auto py-3 bg-light",
       tags$div(
         tags$span("Cooper et al. (2026). Data-and code-archiving in the British Ecological Society journals: present status and recommendations for future improvements."),
-        tags$em("EcoEvoRxiv."),
-        tags$a("https://doi.org/10.32942/X26W9V", href = "https://doi.org/10.32942/X26W9V"),
+        tags$em("Methods in Ecology and Evolution."),
+        tags$a("https://doi.org/10.1111/2041-210x.70338", href = "https://doi.org/10.1111/2041-210x.70338"),
         tags$br(),
         tags$span("Shiny App created by Lewis A. Jones, William Gearty, and Bethany J. Allen. Encountered an issue? Contact:"),
         tags$a("lewis.jones@ucl.ac.uk", href = "mailto:lewis.jones@ucl.ac.uk")
